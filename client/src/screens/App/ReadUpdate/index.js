@@ -31,7 +31,6 @@ const ReadUpdate = () => {
 
   //Edit Todo state and form state
   const [isEditting, setEdit] = useState(false);
-  const [showDialogEdit, setShowDialogEdit] = useState(false);
   const [editTodoID, setTodoID] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
@@ -94,7 +93,7 @@ const ReadUpdate = () => {
     setTodoID(todo.id);
     setEditTitle(todo.title);
     setEditDescription(todo.description);
-    setShowDialogEdit(true)  // Set isEditing to true to show the edit dialog
+
   };
 
   const handleEditTitleChange = (event) => {

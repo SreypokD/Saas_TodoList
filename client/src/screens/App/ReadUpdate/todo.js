@@ -49,13 +49,15 @@ const ContainList = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-const TitleStyle = styled.h3`
-  font-weight: 600;
-  color: blue;
+
+const TableStyle = styled.table`
+  margin: 5px;
+  
 `
 
-const DiscriptionStyle = styled.h4`
+const ThStyle = styled.th`
   font-weight: 600;
+  margin: 5rem;
 `
 
 
@@ -75,39 +77,53 @@ const Todo = ({
 }) => (
   <Wrapper>
     <ContainList>
-      <div>
-        <TitleStyle>Title: {todo.title} </TitleStyle>
-        <DiscriptionStyle>Descrition: {todo.description}</DiscriptionStyle>
-        <DiscriptionStyle>By: {todo.author}</DiscriptionStyle>
-      </div>
-      <ButtonsWrapper>
-        <StyledIconEdit
-          onClick={() => editTodo(todo)}
-          backgroundColor={colors.indigo600}
-          textColor={colors.white}
-          hoverBackgroundColor={colors.indigo500}
-          activeBackgroundColor={colors.indigo600}
-        >
-          Edit
-        </StyledIconEdit>
-        <StyledIconDelete
-          onClick={() => deleteTodo(todo)}
-          backgroundColor={colors.red500}
-          textColor={colors.white}
-          hoverBackgroundColor={colors.indigo500}
-          activeBackgroundColor={colors.indigo600}
-        >
-          Delete
-        </StyledIconDelete>
 
-        <StyledIconUndone>
+      <TableStyle>
+        <tr>
+          <ThStyle>Title</ThStyle>
+          <ThStyle>Description</ThStyle>
+          <ThStyle>Status</ThStyle>
+          <ThStyle>Action</ThStyle>
+        </tr>
+        <tbody>
+          <tr>
+            <td>{todo.title}</td>
+            <td>{todo.description}</td>
+            <td>Active</td>
+            <td>
+              <ButtonsWrapper>
+                <StyledIconEdit
+                  onClick={() => editTodo(todo)}
+                  backgroundColor={colors.indigo600}
+                  textColor={colors.white}
+                  hoverBackgroundColor={colors.indigo500}
+                  activeBackgroundColor={colors.indigo600}
+                >
+                  Edit
+                </StyledIconEdit>
+                <StyledIconDelete
+                  onClick={() => deleteTodo(todo)}
+                  backgroundColor={colors.red500}
+                  textColor={colors.white}
+                  hoverBackgroundColor={colors.indigo500}
+                  activeBackgroundColor={colors.indigo600}
+                >
+                  Delete
+                </StyledIconDelete>
 
-        </StyledIconUndone>
-      </ButtonsWrapper>
+                <StyledIconUndone>
+
+                </StyledIconUndone>
+              </ButtonsWrapper></td>
+          </tr>
+        </tbody>
+      </TableStyle>
+
     </ContainList>
-{/* if edit todo */}
-    {isEditting && todo.id === editTodoID   && (
+    {/* if edit todo */}
+    {isEditting && todo.id === editTodoID && (
       <form onSubmit={(event) => putTodo(event, todo)}>
+
         <Card>
           <TitleWrapper>
             <FieldLabel>
@@ -126,7 +142,7 @@ const Todo = ({
             </FieldLabel>
           </DescriptionWrapper>
           <FormButtonsWrapper>
-            
+
             <CancelButton
               onClick={() => setEdit(false)}
               backgroundColor={colors.red500}

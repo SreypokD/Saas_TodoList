@@ -44,10 +44,13 @@
     "@testing-library/cypress": "^7.0.6",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
+    "autoprefixer": "^10.4.15",
     "babel-jest": "^26.6.3",
     "babel-plugin-styled-components": "^1.12.0",
     "cypress": "^6.9.1",
+    "daisyui": "^3.7.4",
     "jest": "^26.6.3",
+    "postcss": "^8.4.29",
     "prettier": "2.2.1"
   }
 }
