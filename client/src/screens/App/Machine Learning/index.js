@@ -18,6 +18,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const mlServerUrl = 'http://127.0.0.1:5000/machine-learning';
+// const mlServerUrl = 'http://localhost:8080/machine-learning';
 
 const MachineLearning = () => {
   const [prediction, setPrediction] = useState();

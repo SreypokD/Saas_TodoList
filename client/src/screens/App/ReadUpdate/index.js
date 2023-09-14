@@ -11,11 +11,12 @@ import Card from '../../../components/Common/Card';
 const StyledMain = styled.div`
   display: flex;
   flex-direction: column;
-  width: 75%;
+  width:100%;
 `;
 
-const Title = styled.h1`
-  font-size: 1.25rem;
+ const Title = styled.h1`
+  font-size: 1.5rem;
+  font-weight: 600;
 `;
 
 const ReadUpdate = () => {
@@ -30,6 +31,7 @@ const ReadUpdate = () => {
 
   //Edit Todo state and form state
   const [isEditting, setEdit] = useState(false);
+  const [showDialogEdit, setShowDialogEdit] = useState(false);
   const [editTodoID, setTodoID] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
@@ -92,6 +94,7 @@ const ReadUpdate = () => {
     setTodoID(todo.id);
     setEditTitle(todo.title);
     setEditDescription(todo.description);
+    setShowDialogEdit(true)  // Set isEditing to true to show the edit dialog
   };
 
   const handleEditTitleChange = (event) => {
@@ -104,7 +107,7 @@ const ReadUpdate = () => {
 
   return (
     <StyledMain>
-      <Title>Todos: </Title>
+      <Title>Todos List: </Title>
       <Card>
         <Spin tip="Loading..." spinning={isLoading}>
           {todos.length !== 0 ? (

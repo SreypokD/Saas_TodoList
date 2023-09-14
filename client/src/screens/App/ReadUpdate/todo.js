@@ -5,21 +5,25 @@ import { colors } from '../../../styles/theme';
 
 import Button from '../../../components/Common/buttons/SecondaryButton';
 import CancelButton from '../../../components/Common/buttons/CancelButton';
-import DangerButton from '../../../components/Common/buttons/DangerAltButton';
 import Card from '../../../components/Common/Card';
 import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
+import { StyledIconDelete, StyledIconEdit, StyledIconUndone } from '../../../components/Common/reacticon/icon';
+
+
 
 const Wrapper = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
+
 `;
 
 const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 1rem;
+    border-bottom: 1px
 `;
 
 const TitleWrapper = styled.div`
@@ -39,6 +43,22 @@ const FormButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
+
+const ContainList = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const TitleStyle = styled.h3`
+  font-weight: 600;
+  color: blue;
+`
+
+const DiscriptionStyle = styled.h4`
+  font-weight: 600;
+`
+
+
 const Todo = ({
   todo,
   isEditting,
@@ -50,34 +70,43 @@ const Todo = ({
   editTodo,
   deleteTodo,
   putTodo,
-  setEdit
+  setEdit,
+
 }) => (
   <Wrapper>
-    <h4>{todo.title}</h4>
-    <div>{todo.description}</div>
-    <p>By {todo.author}</p>
-    <ButtonsWrapper>
-      <Button
-        onClick={() => editTodo(todo)}
-        backgroundColor={colors.indigo600}
-        textColor={colors.white}
-        hoverBackgroundColor={colors.indigo500}
-        activeBackgroundColor={colors.indigo600}
-      >
-        Edit
-      </Button>
+    <ContainList>
+      <div>
+        <TitleStyle>Title: {todo.title} </TitleStyle>
+        <DiscriptionStyle>Descrition: {todo.description}</DiscriptionStyle>
+        <DiscriptionStyle>By: {todo.author}</DiscriptionStyle>
+      </div>
+      <ButtonsWrapper>
+        <StyledIconEdit
+          onClick={() => editTodo(todo)}
+          backgroundColor={colors.indigo600}
+          textColor={colors.white}
+          hoverBackgroundColor={colors.indigo500}
+          activeBackgroundColor={colors.indigo600}
+        >
+          Edit
+        </StyledIconEdit>
+        <StyledIconDelete
+          onClick={() => deleteTodo(todo)}
+          backgroundColor={colors.red500}
+          textColor={colors.white}
+          hoverBackgroundColor={colors.indigo500}
+          activeBackgroundColor={colors.indigo600}
+        >
+          Delete
+        </StyledIconDelete>
 
-      <DangerButton
-        onClick={() => deleteTodo(todo)}
-        backgroundColor={colors.red500}
-        textColor={colors.white}
-        hoverBackgroundColor={colors.indigo500}
-        activeBackgroundColor={colors.indigo600}
-      >
-        Delete
-      </DangerButton>
-    </ButtonsWrapper>
-    {isEditting && todo.id === editTodoID && (
+        <StyledIconUndone>
+
+        </StyledIconUndone>
+      </ButtonsWrapper>
+    </ContainList>
+{/* if edit todo */}
+    {isEditting && todo.id === editTodoID   && (
       <form onSubmit={(event) => putTodo(event, todo)}>
         <Card>
           <TitleWrapper>
@@ -97,15 +126,7 @@ const Todo = ({
             </FieldLabel>
           </DescriptionWrapper>
           <FormButtonsWrapper>
-            <Button
-              type="submit"
-              backgroundColor={colors.indigo600}
-              textColor={colors.white}
-              hoverBackgroundColor={colors.indigo500}
-              activeBackgroundColor={colors.indigo600}
-            >
-              Send
-            </Button>
+            
             <CancelButton
               onClick={() => setEdit(false)}
               backgroundColor={colors.red500}
@@ -115,12 +136,22 @@ const Todo = ({
             >
               Cancel
             </CancelButton>
+            <Button
+              type="submit"
+              backgroundColor={colors.indigo600}
+              textColor={colors.white}
+              hoverBackgroundColor={colors.indigo500}
+              activeBackgroundColor={colors.indigo600}
+            >
+              Save change
+            </Button>
           </FormButtonsWrapper>
         </Card>
       </form>
     )}
     <hr />
   </Wrapper>
+
 );
 
 export default Todo;

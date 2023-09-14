@@ -15,8 +15,9 @@ import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 
-const Title = styled.h1`
-  font-size: 1.25rem;
+ const Title = styled.h1`
+  font-size: 1.5rem;
+  font-weight: 600;
 `;
 
 const InputWrapper = styled.div`
@@ -75,19 +76,19 @@ const CreateTask = () => {
 
   return (
     <div>
-      <Title>Create Todo</Title>
+      <Title>Create todo list here</Title>
       <form onSubmit={postTodo}>
         <Card>
           <Spin tip="Loading..." spinning={isLoading}>
             <InputWrapper>
               <FieldLabel htmlFor="title">
-                Title
+                Todo list title:
                 <TextInput onChange={handleTitleChange} value={formTitle} name="title" />
               </FieldLabel>
             </InputWrapper>
             <TextAreaWrapper>
               <FieldLabel htmlFor="description">
-                Description
+                Description:
                 <TextArea onChange={handleDescChange} value={formDescription} name="description" />
               </FieldLabel>
             </TextAreaWrapper>
@@ -96,9 +97,9 @@ const CreateTask = () => {
                 textColor={colors.white}
                 backgroundColor={colors.indigo600}
                 hoverBackgroundColor={colors.indigo500}
-                activeBackgroundColor={colors.indigo600}
+                activeBackgroundColor={colors.indigo700}
               >
-                Save
+                Save list
               </Button>
             </ButtonWrapper>
           </Spin>

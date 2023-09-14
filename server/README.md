@@ -12,7 +12,8 @@ I will assume basic Postgres knowledge
 
 1. Subsitute Postgres credentials into .env.example and rename file to .env
 2. Create Tables in a Postgres Database based on commands found in /Database/schema.sql file
-3. Set any AUTH_SECRET you wish
+3. Set any 
+ you wish
    <br/> <br/>
 
 ### Env Var

@@ -11,7 +11,7 @@ const DangerButton = styled.button`
   margin: 1rem 0 1rem 0;
   transition-duration: 0.4s;
   overflow: hidden;
-  width: 8rem;
+  width: 6rem;
   border: none;
   border-radius: 0.2rem;
   cursor: pointer;

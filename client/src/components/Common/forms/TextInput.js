@@ -16,7 +16,7 @@ const TextInput = styled.input`
 
   &:focus {
     box-shadow: 0 0 0 4px lightblue;
-    outline-width: 2px;
+    outline-width: 1px;
     outline-color: lightblue;
   }
 `;

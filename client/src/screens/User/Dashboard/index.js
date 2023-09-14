@@ -82,7 +82,7 @@ const Dashboard = () => {
   const { isLoading } = apiState;
   const [orgs, setOrgs] = useState([]);
   let token = authState?.user.jwt_token;
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = { Authorization: `Bearer ${token}`};
 
   /* eslint-disable */
   useEffect(() => {

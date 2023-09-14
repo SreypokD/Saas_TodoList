@@ -12,6 +12,7 @@ const { Pool } = pg;
 //});
 
 // Standard Syntax
+console.log('ENV:::', process.env.DB_USER);
 const db = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -19,5 +20,4 @@ const db = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT
 });
-
 export default db;

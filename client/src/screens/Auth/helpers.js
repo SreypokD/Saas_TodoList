@@ -33,6 +33,26 @@ export const LoginAuth = async (
   let username = authRes.user.displayName;
   let photo = authRes.user.photoURL;
   let provider = authRes.user.providerData[0].providerId;
+
+
+  ///--------------------------------------add-----------------------------------///
+
+  // let validToken = isValidToken(authServerRes.data.token, fetchFailure);
+  // if (validToken && validToken.user) {
+  //   let id = validToken.user;
+  //   let username = authRes.user.displayName;
+  //   let photo = authRes.user.photoURL;
+  //   let provider = authRes.user.providerData[0].providerId;
+  
+  //   // Rest of your code that depends on these variables
+  // } else {
+  //   // Handle the case when validToken or validToken.user is undefined
+  //   // You can throw an error, log a message, or take appropriate action
+  //   throw new Error('Invalid token or user data');
+  // }
+
+
+
   let jwt_token = authServerRes.data.token;
 
   let user = {

@@ -10,13 +10,15 @@ const CancelButton = styled.button`
   margin: 1rem 0 1rem 0;
   transition-duration: 0.4s;
   overflow: hidden;
-  width: 8rem;
+  width: 6rem;
   border: 1px solid black;
   border-radius: 0.2rem;
   cursor: pointer;
 
   &:hover {
     opacity: 90%;
+    background-color: ${colors.gray900};
+    color: white
   }
 `;
 

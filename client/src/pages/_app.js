@@ -70,7 +70,7 @@ function MyApp(props) {
 
   const fetchFailure = (error) => {
     dispatchApi(Fetch_failure(error));
-    throw new Error('Error Detected, code execution stopped');
+    // throw new Error('Error Detected, code execution stopped');
   };
 
   const fetchInit = () => {
