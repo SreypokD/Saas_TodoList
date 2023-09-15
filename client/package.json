@@ -13,6 +13,7 @@
     "@ant-design/icons": "^4.6.4",
     "@casl/ability": "^5.4.3",
     "@casl/react": "^2.3.0",
+    "@headlessui/react": "^1.7.17",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.17.1",
     "antd": "^4.16.13",
@@ -51,6 +52,7 @@
     "daisyui": "^3.7.4",
     "jest": "^26.6.3",
     "postcss": "^8.4.29",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "tailwindcss": "^3.3.3"
   }
 }

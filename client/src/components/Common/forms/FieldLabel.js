@@ -4,6 +4,8 @@ import { colors } from '../../../styles/theme';
 const Label = styled.label`
   input {
     margin-top: 0.5rem;
+    width: 75%;
+    margin-left:10%;
   }
   display: block;
   font-weight: 500;

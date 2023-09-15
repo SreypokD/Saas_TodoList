@@ -14,8 +14,9 @@ import Card from '../../../components/Common/Card';
 import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
+import DropDown from '../../../components/Common/forms/DropDownd';
 
- const Title = styled.h1`
+const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: 600;
 `;
@@ -39,6 +40,7 @@ const CreateTask = () => {
 
   const [formTitle, setTitle] = useState('');
   const [formDescription, setDescription] = useState('');
+  const [selectStatus , setSelectStatus] = useState('');
   const { fetchFailure, fetchInit, fetchSuccess, apiState } = useContext(ApiContext);
   const { isLoading } = apiState;
   const { authState } = useContext(AuthContext);
@@ -52,8 +54,9 @@ const CreateTask = () => {
     let author = authState?.user.username;
     let title = event.target.title.value;
     let description = event.target.description.value;
-    let data = { title, description, author, org_id };
-
+    let status = event.target.status.value;
+    let data = { title, description, author, status, org_id };
+      console.log(data);
     await axios.post(`/api/post/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -92,6 +95,17 @@ const CreateTask = () => {
                 <TextArea onChange={handleDescChange} value={formDescription} name="description" />
               </FieldLabel>
             </TextAreaWrapper>
+            <InputWrapper>
+              <FieldLabel htmlFor="status">
+                Select status:
+                <DropDown value={selectStatus} id="cars" name="cars" onChange={(e) => {setSelectStatus(e.target.value)}}>
+                  <option value="uncomplete">Uncomplete</option>
+                  <option value="inprogres">Inprogres</option>
+                  <option value="complete">Complete</option>
+                </DropDown>
+              </FieldLabel>
+
+            </InputWrapper>
             <ButtonWrapper>
               <Button
                 textColor={colors.white}

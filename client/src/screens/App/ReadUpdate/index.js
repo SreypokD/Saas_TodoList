@@ -19,6 +19,18 @@ const StyledMain = styled.div`
   font-weight: 600;
 `;
 
+const TrStyle = styled.tr`
+  display:flex;
+  justity-content: space-between;
+  background-color: #D4D4D4D4;
+  padding:5px
+`
+
+const ThStyle = styled.th`
+  margin-right: 20%;
+
+`
+
 const ReadUpdate = () => {
   const org_id = getOrgId();
   const { authState } = useContext(AuthContext);
@@ -108,6 +120,14 @@ const ReadUpdate = () => {
     <StyledMain>
       <Title>Todos List: </Title>
       <Card>
+      <TrStyle>
+          <ThStyle>Title</ThStyle>
+          <ThStyle>Description</ThStyle>
+          
+          <ThStyle>Status</ThStyle>
+          <ThStyle>Action</ThStyle>
+          
+        </TrStyle>
         <Spin tip="Loading..." spinning={isLoading}>
           {todos.length !== 0 ? (
             todos.map((todo) => (
