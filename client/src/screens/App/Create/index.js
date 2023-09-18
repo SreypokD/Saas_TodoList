@@ -37,7 +37,7 @@ const ButtonWrapper = styled.div`
 
 const CreateTask = () => {
   const org_id = getOrgId();
-
+  
   const [formTitle, setTitle] = useState('');
   const [formDescription, setDescription] = useState('');
   const [selectStatus , setSelectStatus] = useState('');
@@ -50,13 +50,14 @@ const CreateTask = () => {
   const postTodo = async (event) => {
     event.preventDefault();
     fetchInit();
-
+  
     let author = authState?.user.username;
-    let title = event.target.title.value;
-    let description = event.target.description.value;
-    let status = event.target.status.value;
+    let title = event.target.title?.value ?? ''; // Check if event.target.title exists before accessing value
+    let description = event.target.description?.value ?? ''; // Check if event.target.description exists before accessing value
+    let status = event.target.status?.value ?? ''; // Check if event.target.status exists before accessing value
     let data = { title, description, author, status, org_id };
-      console.log(data);
+    console.log(data);
+  
     await axios.post(`/api/post/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -98,9 +99,9 @@ const CreateTask = () => {
             <InputWrapper>
               <FieldLabel htmlFor="status">
                 Select status:
-                <DropDown value={selectStatus} id="cars" name="cars" onChange={(e) => {setSelectStatus(e.target.value)}}>
+                <DropDown value={selectStatus} id="status" name="status" onChange={(e) => {setSelectStatus(e.target.value)}}>
                   <option value="uncomplete">Uncomplete</option>
-                  <option value="inprogres">Inprogres</option>
+                  <option value="inprogres">In Progress</option>
                   <option value="complete">Complete</option>
                 </DropDown>
               </FieldLabel>

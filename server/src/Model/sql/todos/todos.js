@@ -1,9 +1,9 @@
 import db from '../../../Database/sql/db.js';
 
-export const postTodoModel = async (title, description, author, org_id) => {
-  let text = `INSERT INTO todos(title, description, author, org_id)
-              VALUES ($1, $2, $3, $4)`;
-  let values = [title, description, author, org_id];
+export const postTodoModel = async (title, description, author,status, org_id) => {
+  let text = `INSERT INTO todos(title, description, author,status, org_id)
+              VALUES ($1, $2, $3, $4,$5)`;
+  let values = [title, description, author,status, org_id];
 
   await db.query(text, values);
 

@@ -17,9 +17,12 @@ export const postTodo = async (req, res) => {
   let title = req.body.title;
   let description = req.body.description;
   let author = req.body.author;
+  let status = req.body.status;
+  console.log(status);
   let org_id = req.body.org_id;
+  
 
-  await postTodoModel(title, description, author, org_id);
+  await postTodoModel(title, description, author,status, org_id);
 
   res.status(200).send('Post Successful');
 };
