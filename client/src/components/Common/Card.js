@@ -13,7 +13,7 @@ const StyledCard = styled.div`
     padding: 1.5rem;
   }
   @media (min-width: ${breakpoints.large}) {
-    width: 75%;
+    width: 90%;
   }
 `;
 
