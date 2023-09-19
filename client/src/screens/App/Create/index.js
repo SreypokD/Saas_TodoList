@@ -15,6 +15,9 @@ import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import DropDown from '../../../components/Common/forms/DropDownd';
+import DateStyle from '../../../components/Common/forms/DateInput';
+
+
 
 const Title = styled.h1`
   font-size: 1.5rem;
@@ -35,12 +38,16 @@ const ButtonWrapper = styled.div`
   text-align: left;
 `;
 
+
+
+
 const CreateTask = () => {
   const org_id = getOrgId();
-  
+
   const [formTitle, setTitle] = useState('');
   const [formDescription, setDescription] = useState('');
-  const [selectStatus , setSelectStatus] = useState('');
+  const [selectStatus, setSelectStatus] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date()); ///from this
   const { fetchFailure, fetchInit, fetchSuccess, apiState } = useContext(ApiContext);
   const { isLoading } = apiState;
   const { authState } = useContext(AuthContext);
@@ -50,14 +57,15 @@ const CreateTask = () => {
   const postTodo = async (event) => {
     event.preventDefault();
     fetchInit();
-  
+
     let author = authState?.user.username;
     let title = event.target.title?.value ?? ''; // Check if event.target.title exists before accessing value
     let description = event.target.description?.value ?? ''; // Check if event.target.description exists before accessing value
     let status = event.target.status?.value ?? ''; // Check if event.target.status exists before accessing value
-    let data = { title, description, author, status, org_id };
+    let date = selectedDate ?? ''; 
+    let data = { title, description, author, status,date, org_id };
     console.log(data);
-  
+
     await axios.post(`/api/post/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -76,6 +84,14 @@ const CreateTask = () => {
 
   const handleDescChange = (event) => {
     setDescription(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setSelectStatus(event.target.value);
+  }
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
 
   return (
@@ -99,13 +115,20 @@ const CreateTask = () => {
             <InputWrapper>
               <FieldLabel htmlFor="status">
                 Select status:
-                <DropDown value={selectStatus} id="status" name="status" onChange={(e) => {setSelectStatus(e.target.value)}}>
+                <DropDown value={selectStatus} id="status" name="status" onChange={handleStatusChange}>
+                  <option selected value="none" >Task status</option>
                   <option value="uncomplete">Uncomplete</option>
                   <option value="inprogres">In Progress</option>
                   <option value="complete">Complete</option>
                 </DropDown>
               </FieldLabel>
-
+            </InputWrapper>
+            <InputWrapper>
+              <p>Date of task:</p>
+              <FieldLabel  htmlFor="date">
+                
+                <DateStyle selected={selectedDate} onChange={handleDateChange} />             
+              </FieldLabel>
             </InputWrapper>
             <ButtonWrapper>
               <Button

@@ -18,7 +18,6 @@ export const postTodo = async (req, res) => {
   let description = req.body.description;
   let author = req.body.author;
   let status = req.body.status;
-  console.log(status);
   let org_id = req.body.org_id;
   
 
@@ -31,10 +30,9 @@ export const putTodo = async (req, res) => {
   let title = req.body.title;
   let description = req.body.description;
   let author = req.body.author;
+  let status = req.body.status;
   let todo_id = req.body.todo_id;
-
-  await putTodoModel(title, description, author, todo_id);
-
+ await putTodoModel(title, description, author, status, todo_id);
   res.status(200).send('Put Successful');
 };
 

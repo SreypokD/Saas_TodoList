@@ -19,10 +19,10 @@ export const getTodosModel = async (org_id) => {
   return queryResult.rows;
 };
 
-export const putTodoModel = async (title, description, author, todo_id) => {
-  let text = `UPDATE todos SET title= $1, description=$2, author=$3
-              WHERE id = $4`;
-  let values = [title, description, author, todo_id];
+export const putTodoModel = async (title, description, author,status, todo_id) => {
+  let text = `UPDATE todos SET title= $1, description=$2, author=$3 , status=$4
+              WHERE id = $5`;
+  let values = [title, description, author,status, todo_id];
 
   await db.query(text, values);
 

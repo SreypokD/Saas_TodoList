@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../styles/theme';
 import Button from '../../../components/Common/buttons/SecondaryButton';
@@ -8,6 +8,7 @@ import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import { StyledBiCheckCircle, StyledBiCircle, StyledIconDelete, StyledIconEdit, StyledIconUndone } from '../../../components/Common/reacticon/icon';
+import DropDown from '../../../components/Common/forms/DropDownd';
 
 
 
@@ -58,14 +59,44 @@ const TrStyle = styled.tr`
 `
 
 const ButtonInprogresStyle = styled.button`
-    background-color: #acdf87;
+    background-color: #ffd1b3;
     border: none;
-    font-weight : 600;
+    margin:2px;
+    border-radius: 50px;
+    color: #ff4f00;
+    font-size:12px
+    padding: 5px;
+`
+const ButtonUncompleteStyle = styled.button`
+    background-color: #ffcbd1;
+    border: none;
+    margin:2px;
+    border-radius: 30px;
+    color: red;
+    font-size:12px
+    padding: 5px;
+`
+
+const ButtonCompleteStyle = styled.button`
+    background-color: #cbf5dd;
+    border: none;
     margin:2px;
     border-radius: 30px;
     color: green;
     font-size:12px
+    padding: 5px;
 `
+const ButtonNullStyle = styled.button`
+  background-color:red;
+  border: none;
+  margin:2px;
+  border-radius: 30px;
+  color: white;
+  font-size:12px
+  padding: 5px;
+  `
+
+
 
 const Todo = ({
   todo,
@@ -79,18 +110,49 @@ const Todo = ({
   deleteTodo,
   putTodo,
   setEdit,
+  handleStatusChange,
+  editStatus
+}) => {
 
-}) => (
-  <Wrapper>
-    <ContainList>
-      <TableStyle>
-        <TrStyle>
-          <TdStyle>{todo.title}</TdStyle>
-          <TdStyle>{todo.description}</TdStyle>
-          <TdStyle><ButtonInprogresStyle>inprogess</ButtonInprogresStyle></TdStyle>
-          <TdStyle>
-              <StyledBiCircle></StyledBiCircle>
-              <StyledBiCheckCircle></StyledBiCheckCircle>
+  // Function to render the appropriate status button component
+  const renderStatusButton = () => {
+    if (todo.status === 'uncomplete') {
+      return <ButtonUncompleteStyle>uncomplete</ButtonUncompleteStyle>;
+    } else if (todo.status === 'complete') {
+      return <ButtonCompleteStyle>complete</ButtonCompleteStyle>;
+    } else if (todo.status === 'inprogres') {
+      return <ButtonInprogresStyle>inprogress</ButtonInprogresStyle>;
+    }
+    return <ButtonNullStyle>no status</ButtonNullStyle>; // Default case if status value is not recognized
+  };
+  //  if task complete 
+  const [isCompleted, setIsCompleted] = useState(false); // Add state for tracking completion status
+
+  // Function to handle the click event and toggle the completion state
+  const handleIconClick = () => {
+    setIsCompleted(!isCompleted);
+  };
+
+
+  return (
+    <Wrapper>
+      <ContainList>
+        <TableStyle>
+          <TrStyle>
+            <TdStyle>{todo.title}</TdStyle>
+            <TdStyle>{todo.description}</TdStyle>
+            <TdStyle>
+              {renderStatusButton()} {/* Render the appropriate status button */}
+            </TdStyle>
+            <TdStyle>
+
+              {/* if done  */}
+              {isCompleted ? (
+                <StyledBiCheckCircle onClick={handleIconClick} />
+              ) : (
+                <StyledBiCircle onClick={handleIconClick} />
+              )}
+
               <StyledIconEdit
                 onClick={() => editTodo(todo)}
                 backgroundColor={colors.indigo600}
@@ -109,58 +171,64 @@ const Todo = ({
               >
                 Delete
               </StyledIconDelete>
-          </TdStyle>
-        </TrStyle>
-      </TableStyle>
-
-    </ContainList>
-    {/* if edit todo */}
-    {isEditting && todo.id === editTodoID && (
-      <form onSubmit={(event) => putTodo(event, todo)}>
-
-        <Card>
-          <TitleWrapper>
-            <FieldLabel>
-              Title
-              <TextInput onChange={handleEditTitleChange} value={editTitle} name="title" />
+            </TdStyle>
+          </TrStyle>
+        </TableStyle>
+      </ContainList>
+      {/* if edit todo */}
+      {isEditting && todo.id === editTodoID && (
+        <form onSubmit={(event) => putTodo(event, todo)}>
+          <Card>
+            <TitleWrapper>
+              <FieldLabel>
+                Title
+                <TextInput onChange={handleEditTitleChange} value={editTitle} name="title" />
+              </FieldLabel>
+            </TitleWrapper>
+            <DescriptionWrapper>
+              <FieldLabel>
+                Description
+                <TextArea
+                  onChange={handleEditDescChange}
+                  value={editDescription}
+                  name="description"
+                />
+              </FieldLabel>
+            </DescriptionWrapper>
+            <FieldLabel htmlFor="status">
+              Select status:
+              <DropDown id="status" name="status" value={editStatus} onChange={handleStatusChange}>
+                <option selected value="none">Task status</option>
+                <option value="uncomplete">Uncomplete</option>
+                <option value="inprogres">InProgress</option>
+                <option value="complete">Complete</option>
+              </DropDown>
             </FieldLabel>
-          </TitleWrapper>
-          <DescriptionWrapper>
-            <FieldLabel>
-              Description
-              <TextArea
-                onChange={handleEditDescChange}
-                value={editDescription}
-                name="description"
-              />
-            </FieldLabel>
-          </DescriptionWrapper>
-          <FormButtonsWrapper>
-
-            <CancelButton
-              onClick={() => setEdit(false)}
-              backgroundColor={colors.red500}
-              textColor={colors.white}
-              hoverBackgroundColor={colors.indigo500}
-              activeBackgroundColor={colors.indigo600}
-            >
-              Cancel
-            </CancelButton>
-            <Button
-              type="submit"
-              backgroundColor={colors.indigo600}
-              textColor={colors.white}
-              hoverBackgroundColor={colors.indigo500}
-              activeBackgroundColor={colors.indigo600}
-            >
-              Save change
-            </Button>
-          </FormButtonsWrapper>
-        </Card>
-      </form>
-    )}
-  </Wrapper>
-
-);
+            <FormButtonsWrapper>
+              <CancelButton
+                onClick={() => setEdit(false)}
+                backgroundColor={colors.red500}
+                textColor={colors.white}
+                hoverBackgroundColor={colors.indigo500}
+                activeBackgroundColor={colors.indigo600}
+              >
+                Cancel
+              </CancelButton>
+              <Button
+                type="submit"
+                backgroundColor={colors.indigo600}
+                textColor={colors.white}
+                hoverBackgroundColor={colors.indigo500}
+                activeBackgroundColor={colors.indigo600}
+              >
+                Save change
+              </Button>
+            </FormButtonsWrapper>
+          </Card>
+        </form>
+      )}
+    </Wrapper>
+  );
+};
 
 export default Todo;

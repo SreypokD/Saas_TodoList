@@ -46,6 +46,7 @@ const ReadUpdate = () => {
   const [editTodoID, setTodoID] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  const [editStatus, setEditStatus] = useState('');
 
   /* eslint-disable */
   useEffect(() => {
@@ -87,9 +88,10 @@ const ReadUpdate = () => {
     let title = event.target.title.value;
     let description = event.target.description.value;
     let author = authState?.user.username;
+    let status = event.target.status.value;
     let todo_id = todo.id;
 
-    let data = { title, description, author, todo_id };
+    let data = { title, description, author, status,  todo_id };
     await axios.put(`/api/put/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -105,6 +107,7 @@ const ReadUpdate = () => {
     setTodoID(todo.id);
     setEditTitle(todo.title);
     setEditDescription(todo.description);
+    setEditStatus(todo.status);
 
   };
 
@@ -114,6 +117,10 @@ const ReadUpdate = () => {
 
   const handleEditDescChange = (event) => {
     setEditDescription(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setEditStatus(event.target.value);
   };
 
   return (
@@ -140,6 +147,8 @@ const ReadUpdate = () => {
                 handleEditDescChange={handleEditDescChange}
                 editDescription={editDescription}
                 editTodo={editTodo}
+                handleStatusChange={handleStatusChange}
+                editStatus = {editStatus}
                 deleteTodo={deleteTodo}
                 putTodo={putTodo}
                 setEdit={setEdit}
