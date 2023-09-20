@@ -1,9 +1,7 @@
-import DatePicker from "react-datepicker";
-import Datetime from 'react-datetime';
-import "react-datepicker/dist/react-datepicker.css";
+
 import styled from 'styled-components';
 
-const DateStyle = styled(DatePicker) `
+const DateStyle = styled.input`
     background-color: #ffffff;
     border-color: #d2d6dc;
     border-width: 1px;

@@ -1,9 +1,9 @@
 import db from '../../../Database/sql/db.js';
 
-export const postTodoModel = async (title, description, author,status, org_id) => {
-  let text = `INSERT INTO todos(title, description, author,status, org_id)
-              VALUES ($1, $2, $3, $4,$5)`;
-  let values = [title, description, author,status, org_id];
+export const postTodoModel = async (title, description, author,status, date, org_id) => {
+  let text = `INSERT INTO todos(title, description, author,status,date, org_id)
+              VALUES ($1, $2, $3, $4,$5,$6)`;
+  let values = [title, description, author,status,date, org_id];
 
   await db.query(text, values);
 
@@ -19,10 +19,10 @@ export const getTodosModel = async (org_id) => {
   return queryResult.rows;
 };
 
-export const putTodoModel = async (title, description, author,status, todo_id) => {
-  let text = `UPDATE todos SET title= $1, description=$2, author=$3 , status=$4
-              WHERE id = $5`;
-  let values = [title, description, author,status, todo_id];
+export const putTodoModel = async (title, description, author,status,date, todo_id) => {
+  let text = `UPDATE todos SET title= $1, description=$2, author=$3 , status=$4 , date=$5
+              WHERE id = $6`;
+  let values = [title, description, author,status,date, todo_id];
 
   await db.query(text, values);
 

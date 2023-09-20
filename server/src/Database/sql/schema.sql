@@ -31,6 +31,7 @@ CREATE TABLE todos (
   description VARCHAR(1000),
   author VARCHAR(255),
   status VARCHAR(255),
+  date VARCHAR(255),
   org_id UUID REFERENCES organizations(id)
 );
 

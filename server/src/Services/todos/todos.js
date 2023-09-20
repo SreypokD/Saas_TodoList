@@ -18,10 +18,11 @@ export const postTodo = async (req, res) => {
   let description = req.body.description;
   let author = req.body.author;
   let status = req.body.status;
+  let date = req.body.date;
   let org_id = req.body.org_id;
   
 
-  await postTodoModel(title, description, author,status, org_id);
+  await postTodoModel(title, description, author,status,date, org_id);
 
   res.status(200).send('Post Successful');
 };
@@ -31,8 +32,9 @@ export const putTodo = async (req, res) => {
   let description = req.body.description;
   let author = req.body.author;
   let status = req.body.status;
+  let date = req.body.date;
   let todo_id = req.body.todo_id;
- await putTodoModel(title, description, author, status, todo_id);
+ await putTodoModel(title, description, author, status,date, todo_id);
   res.status(200).send('Put Successful');
 };
 

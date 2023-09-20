@@ -9,6 +9,7 @@ import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import { StyledBiCheckCircle, StyledBiCircle, StyledIconDelete, StyledIconEdit, StyledIconUndone } from '../../../components/Common/reacticon/icon';
 import DropDown from '../../../components/Common/forms/DropDownd';
+import DateStyle from '../../../components/Common/forms/DateInput';
 
 
 
@@ -49,13 +50,27 @@ const TableStyle = styled.table`
 `
 
 const TdStyle = styled.td`
-    width: 40%;
-  
+    width: 20%;
+    white-space: rap;
+
+    
 `
 
 const TrStyle = styled.tr`
   display:flex;
   align-items: center;
+  
+  &:hover {
+    opacity: 90%;
+    background-color: ${colors.gray100};
+  } 
+  
+    ${({ isCompleted }) =>
+    isCompleted &&
+    `
+      color: red;
+      text-decoration: line-through;
+    `}
 `
 
 const ButtonInprogresStyle = styled.button`
@@ -97,7 +112,6 @@ const ButtonNullStyle = styled.button`
   `
 
 
-
 const Todo = ({
   todo,
   isEditting,
@@ -111,17 +125,23 @@ const Todo = ({
   putTodo,
   setEdit,
   handleStatusChange,
-  editStatus
+  editStatus,
+  editDate,
+  handleDateChange
 }) => {
 
   // Function to render the appropriate status button component
   const renderStatusButton = () => {
-    if (todo.status === 'uncomplete') {
-      return <ButtonUncompleteStyle>uncomplete</ButtonUncompleteStyle>;
-    } else if (todo.status === 'complete') {
-      return <ButtonCompleteStyle>complete</ButtonCompleteStyle>;
+    if (todo.status === 'uncomplete' && isCompleted) {
+      return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
+    } else if (todo.status === 'complete' && isCompleted) {
+      return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
+    } else if (todo.status === 'inprogres' && isCompleted) {
+      return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
     } else if (todo.status === 'inprogres') {
-      return <ButtonInprogresStyle>inprogress</ButtonInprogresStyle>;
+      return <ButtonInprogresStyle>Inprogress</ButtonInprogresStyle>;
+    } else if (todo.status === 'uncomplete') {
+      return <ButtonUncompleteStyle>Uncomplete</ButtonUncompleteStyle>;
     }
     return <ButtonNullStyle>no status</ButtonNullStyle>; // Default case if status value is not recognized
   };
@@ -133,25 +153,29 @@ const Todo = ({
     setIsCompleted(!isCompleted);
   };
 
-
   return (
     <Wrapper>
       <ContainList>
         <TableStyle>
-          <TrStyle>
-            <TdStyle>{todo.title}</TdStyle>
+          <TrStyle isCompleted={isCompleted}>
+            {isCompleted ? (
+              <StyledBiCheckCircle onClick={handleIconClick} />
+            ) : (
+              <StyledBiCircle onClick={handleIconClick} />
+            )}
+            <TdStyle >
+              <div>
+
+              </div>
+              <p>{todo.title} </p>
+            </TdStyle>
             <TdStyle>{todo.description}</TdStyle>
+            <TdStyle>{todo.date}</TdStyle>
             <TdStyle>
               {renderStatusButton()} {/* Render the appropriate status button */}
             </TdStyle>
-            <TdStyle>
 
-              {/* if done  */}
-              {isCompleted ? (
-                <StyledBiCheckCircle onClick={handleIconClick} />
-              ) : (
-                <StyledBiCircle onClick={handleIconClick} />
-              )}
+            <TdStyle>
 
               <StyledIconEdit
                 onClick={() => editTodo(todo)}
@@ -203,6 +227,10 @@ const Todo = ({
                 <option value="inprogres">InProgress</option>
                 <option value="complete">Complete</option>
               </DropDown>
+            </FieldLabel>
+            <FieldLabel htmlFor="date">
+              Date of task:
+              <DateStyle type='date' id='date' name='date' value={editDate} onChange={handleDateChange} />
             </FieldLabel>
             <FormButtonsWrapper>
               <CancelButton

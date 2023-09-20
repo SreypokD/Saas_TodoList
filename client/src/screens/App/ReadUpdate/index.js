@@ -14,7 +14,7 @@ const StyledMain = styled.div`
   width:100%;
 `;
 
- const Title = styled.h1`
+const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: 600;
 `;
@@ -27,8 +27,8 @@ const TrStyle = styled.tr`
 `
 
 const ThStyle = styled.th`
-  margin-right: 20%;
-
+  margin-right: 14.8%;
+  font-size:17px;
 `
 
 const ReadUpdate = () => {
@@ -46,6 +46,7 @@ const ReadUpdate = () => {
   const [editTodoID, setTodoID] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  const [editDate, setEditDate] = useState('');
   const [editStatus, setEditStatus] = useState('');
 
   /* eslint-disable */
@@ -89,9 +90,10 @@ const ReadUpdate = () => {
     let description = event.target.description.value;
     let author = authState?.user.username;
     let status = event.target.status.value;
+    let date = event.target.date.value;
     let todo_id = todo.id;
 
-    let data = { title, description, author, status,  todo_id };
+    let data = { title, description, author, status, date, todo_id };
     await axios.put(`/api/put/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -107,6 +109,7 @@ const ReadUpdate = () => {
     setTodoID(todo.id);
     setEditTitle(todo.title);
     setEditDescription(todo.description);
+    setEditDate(todo.date);
     setEditStatus(todo.status);
 
   };
@@ -123,17 +126,20 @@ const ReadUpdate = () => {
     setEditStatus(event.target.value);
   };
 
+  const handleDateChange = (event) => {
+    setEditDate(event.target.value);
+  };
+
   return (
     <StyledMain>
       <Title>Todos List: </Title>
       <Card>
-      <TrStyle>
+        <TrStyle>
           <ThStyle>Title</ThStyle>
           <ThStyle>Description</ThStyle>
-          
+          <ThStyle>Date</ThStyle>
           <ThStyle>Status</ThStyle>
           <ThStyle>Action</ThStyle>
-          
         </TrStyle>
         <Spin tip="Loading..." spinning={isLoading}>
           {todos.length !== 0 ? (
@@ -148,7 +154,9 @@ const ReadUpdate = () => {
                 editDescription={editDescription}
                 editTodo={editTodo}
                 handleStatusChange={handleStatusChange}
-                editStatus = {editStatus}
+                editStatus={editStatus}
+                handleDateChange={handleDateChange}
+                editDate={editDate}
                 deleteTodo={deleteTodo}
                 putTodo={putTodo}
                 setEdit={setEdit}

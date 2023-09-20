@@ -47,7 +47,7 @@ const CreateTask = () => {
   const [formTitle, setTitle] = useState('');
   const [formDescription, setDescription] = useState('');
   const [selectStatus, setSelectStatus] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date()); ///from this
+  const [selectedDate, setSelectedDate] = useState(''); ///from this
   const { fetchFailure, fetchInit, fetchSuccess, apiState } = useContext(ApiContext);
   const { isLoading } = apiState;
   const { authState } = useContext(AuthContext);
@@ -62,7 +62,7 @@ const CreateTask = () => {
     let title = event.target.title?.value ?? ''; // Check if event.target.title exists before accessing value
     let description = event.target.description?.value ?? ''; // Check if event.target.description exists before accessing value
     let status = event.target.status?.value ?? ''; // Check if event.target.status exists before accessing value
-    let date = selectedDate ?? ''; 
+    let date = event.target.date?.value ?? ''; 
     let data = { title, description, author, status,date, org_id };
     console.log(data);
 
@@ -74,6 +74,7 @@ const CreateTask = () => {
 
     setTitle('');
     setDescription('');
+    setSelectStatus('');
     message.success('Todo Created');
     fetchSuccess();
   };
@@ -90,8 +91,8 @@ const CreateTask = () => {
     setSelectStatus(event.target.value);
   }
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
   };
 
   return (
@@ -115,8 +116,8 @@ const CreateTask = () => {
             <InputWrapper>
               <FieldLabel htmlFor="status">
                 Select status:
-                <DropDown value={selectStatus} id="status" name="status" onChange={handleStatusChange}>
-                  <option selected value="none" >Task status</option>
+                <DropDown value={selectStatus} id="status" name="status" defaultValue="none" onChange={handleStatusChange}>
+                  <option  value="none" >Task status</option>
                   <option value="uncomplete">Uncomplete</option>
                   <option value="inprogres">In Progress</option>
                   <option value="complete">Complete</option>
@@ -124,10 +125,9 @@ const CreateTask = () => {
               </FieldLabel>
             </InputWrapper>
             <InputWrapper>
-              <p>Date of task:</p>
               <FieldLabel  htmlFor="date">
-                
-                <DateStyle selected={selectedDate} onChange={handleDateChange} />             
+                Date of task:
+                <DateStyle type='date' id='date' name='date' value={selectedDate} onChange={handleDateChange}/>           
               </FieldLabel>
             </InputWrapper>
             <ButtonWrapper>
