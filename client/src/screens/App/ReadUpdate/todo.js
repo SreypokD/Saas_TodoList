@@ -3,19 +3,25 @@ import styled from 'styled-components';
 import { colors } from '../../../styles/theme';
 import Button from '../../../components/Common/buttons/SecondaryButton';
 import CancelButton from '../../../components/Common/buttons/CancelButton';
-import Card from '../../../components/Common/Card';
+import Dialog from '../../../components/Common/Dialog';
 import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import { StyledBiCheckCircle, StyledBiCircle, StyledIconDelete, StyledIconEdit, StyledIconUndone } from '../../../components/Common/reacticon/icon';
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
+<<<<<<< HEAD
 import axios from 'axios';
+=======
+import { DateString } from '../../../components/Common/DateString';
+import { ContainStatus } from '../Create/index'
+import { ContainDate } from '../Create/index'
+>>>>>>> refs/remotes/origin/main
 
 const Wrapper = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
-
+  
 `;
 
 
@@ -28,12 +34,15 @@ const TitleWrapper = styled.div`
 const DescriptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+
 `;
 
 const FormButtonsWrapper = styled.div`
-  padding: 1rem 0;
   display: flex;
-  justify-content: space-between;
+  align-item: center;
+  justify-content : space-evenly;
+
 `;
 
 
@@ -41,19 +50,37 @@ const ContainList = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  
 `
 
 const TableStyle = styled.table`
     border-bottom: 1px solid black;
-    width: 100%
+    width: 100%; 
 `
 
 const TdStyle = styled.td`
-    width: 20%;
-    white-space: rap;
+  width: 20%;
+  white-space: wrap;
 
-    
-`
+  /* Add styles for the first child */
+  &:first-child {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 2rem;
+
+    p {
+      margin-top: 0.8rem;
+      margin-left: 0.5rem;
+    }
+  }
+  &:nth-child(2){
+    margin-right : 5rem;
+
+  }
+
+`;
 
 const TrStyle = styled.tr`
   display:flex;
@@ -109,7 +136,18 @@ const ButtonNullStyle = styled.button`
   font-size:12px
   padding: 5px;
   `
+  const ContainDateStatus = styled.div`
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  width : 60rem;
+  margin-top: 0.5rem;
 
+  `
+  const TitleEdit = styled.h1`
+  text-align: center;
+
+  `
 
 const Todo = ({
   todo,
@@ -170,16 +208,29 @@ const Todo = ({
       <ContainList>
         <TableStyle>
           <TrStyle isCompleted={isCompleted}>
+<<<<<<< HEAD
             {isCompleted ? (
               <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
             ) : (
               <StyledBiCircle onClick={handleCompleteButtonClick} />
             )}
             <TdStyle >
+=======
+            <TdStyle  >
+              {isCompleted ? (
+                <StyledBiCheckCircle onClick={handleIconClick} />
+              ) : (
+                <StyledBiCircle onClick={handleIconClick} />
+              )}
+>>>>>>> refs/remotes/origin/main
               <p>{todo.title} </p>
             </TdStyle>
             <TdStyle>{todo.description}</TdStyle>
-            <TdStyle>{todo.date}</TdStyle>
+            <TdStyle>
+              <DateString dateString={todo.date} />
+            </TdStyle>
+
+
             <TdStyle>
               {renderStatusButton()} {/* Render the appropriate status button */}
             </TdStyle>
@@ -211,16 +262,18 @@ const Todo = ({
       {/* if edit todo */}
       {isEditting && todo.id === editTodoID && (
         <form onSubmit={(event) => putTodo(event, todo)}>
-          <Card>
+          
+          <Dialog>
+            <TitleEdit>Edit Todo</TitleEdit>
             <TitleWrapper>
               <FieldLabel>
-                Title
+                Title:
                 <TextInput onChange={handleEditTitleChange} value={editTitle} name="title" />
               </FieldLabel>
             </TitleWrapper>
             <DescriptionWrapper>
               <FieldLabel>
-                Description
+                Description:
                 <TextArea
                   onChange={handleEditDescChange}
                   value={editDescription}
@@ -228,19 +281,23 @@ const Todo = ({
                 />
               </FieldLabel>
             </DescriptionWrapper>
-            <FieldLabel htmlFor="status">
-              Select status:
-              <DropDown id="status" name="status" value={editStatus} onChange={handleStatusChange}>
-                <option selected value="none">Task status</option>
-                <option value="uncomplete">Uncomplete</option>
-                <option value="inprogres">InProgress</option>
-                <option value="complete">Complete</option>
-              </DropDown>
-            </FieldLabel>
-            <FieldLabel htmlFor="date">
-              Date of task:
-              <DateStyle type='date' id='date' name='date' value={editDate} onChange={handleDateChange} />
-            </FieldLabel>
+            <ContainDateStatus>
+              <ContainStatus>
+                <FieldLabel htmlFor="status">
+                  Select status:
+                  <DropDown id="status" name="status" value={editStatus} onChange={handleStatusChange}>
+                    <option selected value="none">Task status</option>
+                    <option value="uncomplete">Uncomplete</option>
+                    <option value="inprogres">InProgress</option>
+                    <option value="complete">Complete</option>
+                  </DropDown>
+                </FieldLabel>
+              </ContainStatus>
+              <ContainDate>
+                Date of task:
+                <DateStyle type='date' id='date' name='date' value={editDate} onChange={handleDateChange} />
+              </ContainDate>
+            </ContainDateStatus>
             <FormButtonsWrapper>
               <CancelButton
                 onClick={() => setEdit(false)}
@@ -261,7 +318,7 @@ const Todo = ({
                 Save change
               </Button>
             </FormButtonsWrapper>
-          </Card>
+          </Dialog>
         </form>
       )}
     </Wrapper>

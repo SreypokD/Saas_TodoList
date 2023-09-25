@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { colors } from '../../../styles/theme';
 import AuthContext from '../../../utils/authContext';
 import ApiContext from '../../../utils/apiContext';
 import getOrgId from '../../../utils/orgId';
@@ -7,7 +8,7 @@ import Todo from './todo';
 import { Empty, Spin } from 'antd';
 import axios from '../../../services/axios';
 import Card from '../../../components/Common/Card';
-
+import { message, Modal } from 'antd';
 const StyledMain = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,16 +20,28 @@ const Title = styled.h1`
   font-weight: 600;
 `;
 
-const TrStyle = styled.tr`
+const TitleTr = styled.p`
   display:flex;
   justity-content: space-between;
-  background-color: #D4D4D4D4;
-  padding:5px
+  background-color: ${colors.coolGray300};
+  padding:5px;
 `
 
-const ThStyle = styled.th`
-  margin-right: 14.8%;
+const ThStyle = styled.strong`
+  margin-right: 16%;
   font-size:17px;
+  &:first-child {
+    margin-left: 0.5rem;
+  }
+  &:nth-child(2){
+    margin-left: 1rem;
+  }
+  &:nth-child(3){
+    margin-left: 0.5rem;
+  }
+  &:nth-child(5){
+    margin-left: -1.6rem;
+  }
 `
 
 const ReadUpdate = () => {
@@ -48,6 +61,9 @@ const ReadUpdate = () => {
   const [editDescription, setEditDescription] = useState('');
   const [editDate, setEditDate] = useState('');
   const [editStatus, setEditStatus] = useState('');
+//delete diglog visible
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [deleteTargetTodo, setDeleteTargetTodo] = useState(null);
 
   /* eslint-disable */
   useEffect(() => {
@@ -68,21 +84,38 @@ const ReadUpdate = () => {
     fetchSuccess();
   };
 
-  const deleteTodo = async (todo) => {
-    fetchInit();
-    let todo_id = todo.id;
 
+<<<<<<< HEAD
     let params = { todo_id };
     await axios.delete(`/api/delete/todo`, { params, headers }).catch((err) => {
       fetchFailure(err);
       console.log(params);
     });
+=======
+    const deleteTodo = async (todo) => {
+      setDeleteTargetTodo(todo);
+      setDeleteConfirmationVisible(true);
+    };
+>>>>>>> refs/remotes/origin/main
 
-    setEdit(false);
+    const confirmDelete = async () => {
+      fetchInit();
+      const todo_id = deleteTargetTodo.id;
 
-    setTimeout(() => fetchTodos(), 300);
-    fetchSuccess();
-  };
+      const params = { todo_id };
+      await axios.delete(`/api/delete/todo`, { params, headers }).catch((err) => {
+        fetchFailure(err);
+      });
+
+      setDeleteConfirmationVisible(false);
+      setTimeout(() => fetchTodos(), 300);
+      message.success('Todo Deleted');
+      fetchSuccess();
+    };
+
+    const cancelDelete = () => {
+      setDeleteConfirmationVisible(false);
+    };
 
   const putTodo = async (event, todo) => {
     event.preventDefault();
@@ -95,6 +128,14 @@ const ReadUpdate = () => {
     let todo_id = todo.id;
 
     let data = { title, description, author, status, date, todo_id };
+
+    if (!title || !description || !status || !date) {
+      message.error('Please fill in all fields');
+      fetchSuccess(); // Stop loading state
+      return;
+    }else {
+      message.success('Todo Edited');
+    }
     await axios.put(`/api/put/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -135,13 +176,13 @@ const ReadUpdate = () => {
     <StyledMain>
       <Title>Todos List: </Title>
       <Card>
-        <TrStyle>
+        <TitleTr>
           <ThStyle>Title</ThStyle>
           <ThStyle>Description</ThStyle>
           <ThStyle>Date</ThStyle>
           <ThStyle>Status</ThStyle>
           <ThStyle>Action</ThStyle>
-        </TrStyle>
+        </TitleTr>
         <Spin tip="Loading..." spinning={isLoading}>
           {todos.length !== 0 ? (
             todos.map((todo) => (
@@ -168,6 +209,16 @@ const ReadUpdate = () => {
           )}
         </Spin>
       </Card>
+      <Modal
+        title="Confirm Delete"
+        visible={deleteConfirmationVisible}
+        onOk={confirmDelete}
+        onCancel={cancelDelete}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this todo?</p>
+      </Modal>
     </StyledMain>
   );
 };
