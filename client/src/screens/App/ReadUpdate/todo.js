@@ -10,8 +10,7 @@ import TextInput from '../../../components/Common/forms/TextInput';
 import { StyledBiCheckCircle, StyledBiCircle, StyledIconDelete, StyledIconEdit, StyledIconUndone } from '../../../components/Common/reacticon/icon';
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
-
-
+import axios from 'axios';
 
 const Wrapper = styled.div`
   padding-top: 1rem;
@@ -129,28 +128,41 @@ const Todo = ({
   editDate,
   handleDateChange
 }) => {
-
-  // Function to render the appropriate status button component
-  const renderStatusButton = () => {
-    if (todo.status === 'uncomplete' && isCompleted) {
-      return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
-    } else if (todo.status === 'complete' && isCompleted) {
-      return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
-    } else if (todo.status === 'inprogres' && isCompleted) {
-      return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
-    } else if (todo.status === 'inprogres') {
-      return <ButtonInprogresStyle>Inprogress</ButtonInprogresStyle>;
-    } else if (todo.status === 'uncomplete') {
-      return <ButtonUncompleteStyle>Uncomplete</ButtonUncompleteStyle>;
-    }
-    return <ButtonNullStyle>no status</ButtonNullStyle>; // Default case if status value is not recognized
-  };
   //  if task complete 
   const [isCompleted, setIsCompleted] = useState(false); // Add state for tracking completion status
-
-  // Function to handle the click event and toggle the completion state
-  const handleIconClick = () => {
+   
+  const handleCompleteButtonClick = async (todo) => {
+    // Update the task's completion status locally
     setIsCompleted(!isCompleted);
+    let todo_id = todo.id;
+    let params = { todo_id };
+    
+    // Define the headers object
+    const headers = {
+      // Define your desired headers here
+      // For example:
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer your-token',
+    };
+    
+    // Send the update request to the server
+    await axios.put(`/api/put/complete/todo`,{ params, headers })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  };
+
+  // Render the appropriate status button with the updated event handler
+  const renderStatusButton = () => {
+    if (isCompleted) {
+      return <ButtonCompleteStyle onClick={handleCompleteButtonClick}>Complete</ButtonCompleteStyle>;
+    } else if (todo.status === 'inprogres') {
+      return <ButtonInprogresStyle onClick={handleCompleteButtonClick}>In Progress</ButtonInprogresStyle>;
+    } else if (todo.status === 'uncomplete') {
+      return <ButtonUncompleteStyle onClick={handleCompleteButtonClick}>Uncomplete</ButtonUncompleteStyle>;
+    }
+    return <ButtonNullStyle onClick={handleCompleteButtonClick}>No status</ButtonNullStyle>;
   };
 
   return (
@@ -159,14 +171,11 @@ const Todo = ({
         <TableStyle>
           <TrStyle isCompleted={isCompleted}>
             {isCompleted ? (
-              <StyledBiCheckCircle onClick={handleIconClick} />
+              <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
             ) : (
-              <StyledBiCircle onClick={handleIconClick} />
+              <StyledBiCircle onClick={handleCompleteButtonClick} />
             )}
             <TdStyle >
-              <div>
-
-              </div>
               <p>{todo.title} </p>
             </TdStyle>
             <TdStyle>{todo.description}</TdStyle>

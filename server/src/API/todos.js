@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTodos, postTodo, putTodo, deleteTodo } from '../Services/todos/todos.js';
+import { getTodos, postTodo, putTodo,completeTodo ,deleteTodo } from '../Services/todos/todos.js';
 import { asyncHandler } from '../Middleware/asyncErrorHandler.js';
 import { requireAuth } from '../Middleware/auth.js';
 const router = express.Router();
@@ -12,6 +12,9 @@ router.post('/post/todo', requireAuth, asyncHandler(postTodo));
 
 /* Edit Todo */
 router.put('/put/todo', requireAuth, asyncHandler(putTodo));
+
+/* Edit completed Todo */
+router.put('/put/complete/todo', requireAuth, asyncHandler(completeTodo));
 
 /* Delete Todo */
 router.delete('/delete/todo', requireAuth, asyncHandler(deleteTodo));

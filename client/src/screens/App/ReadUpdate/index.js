@@ -75,6 +75,7 @@ const ReadUpdate = () => {
     let params = { todo_id };
     await axios.delete(`/api/delete/todo`, { params, headers }).catch((err) => {
       fetchFailure(err);
+      console.log(params);
     });
 
     setEdit(false);

@@ -35,6 +35,15 @@ export const deleteTodoModel = async (todo_id) => {
   let values = [todo_id];
 
   await db.query(text, values);
+  return;
+};
 
+export const completeTodoModel = async (todo_id) => {
+  let text = `UPDATE todos 
+              SET status = 'complete' 
+              WHERE id=$1`;
+  let values = [todo_id];
+
+  await db.query(text, values);
   return;
 };

@@ -64,12 +64,10 @@ const CreateTask = () => {
     let status = event.target.status?.value ?? ''; // Check if event.target.status exists before accessing value
     let date = event.target.date?.value ?? ''; 
     let data = { title, description, author, status,date, org_id };
-    console.log(data);
 
     await axios.post(`/api/post/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
-
     sendEventToAnalytics('create_todo', { description: 'user created todo' });
 
     setTitle('');
