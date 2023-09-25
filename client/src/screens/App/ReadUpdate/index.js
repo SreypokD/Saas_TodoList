@@ -73,9 +73,7 @@ const ReadUpdate = () => {
 
   const fetchTodos = async () => {
     fetchInit();
-
     let params = { org_id };
-
     let result = await axios.get(`/api/get/todos`, { params, headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -84,19 +82,10 @@ const ReadUpdate = () => {
     fetchSuccess();
   };
 
-
-<<<<<<< HEAD
-    let params = { todo_id };
-    await axios.delete(`/api/delete/todo`, { params, headers }).catch((err) => {
-      fetchFailure(err);
-      console.log(params);
-    });
-=======
-    const deleteTodo = async (todo) => {
-      setDeleteTargetTodo(todo);
-      setDeleteConfirmationVisible(true);
-    };
->>>>>>> refs/remotes/origin/main
+  const deleteTodo = async (todo) => {
+    setDeleteTargetTodo(todo);
+    setDeleteConfirmationVisible(true);
+  };
 
     const confirmDelete = async () => {
       fetchInit();

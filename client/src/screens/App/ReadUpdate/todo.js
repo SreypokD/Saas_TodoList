@@ -10,13 +10,10 @@ import TextInput from '../../../components/Common/forms/TextInput';
 import { StyledBiCheckCircle, StyledBiCircle, StyledIconDelete, StyledIconEdit, StyledIconUndone } from '../../../components/Common/reacticon/icon';
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
-<<<<<<< HEAD
 import axios from 'axios';
-=======
 import { DateString } from '../../../components/Common/DateString';
 import { ContainStatus } from '../Create/index'
 import { ContainDate } from '../Create/index'
->>>>>>> refs/remotes/origin/main
 
 const Wrapper = styled.div`
   padding-top: 1rem;
@@ -167,22 +164,18 @@ const Todo = ({
   handleDateChange
 }) => {
   //  if task complete 
-  const [isCompleted, setIsCompleted] = useState(false); // Add state for tracking completion status
-   
+  const [isCompleted, setIsCompleted] = useState(false);
   const handleCompleteButtonClick = async (todo) => {
     // Update the task's completion status locally
     setIsCompleted(!isCompleted);
     let todo_id = todo.id;
     let params = { todo_id };
-    
     // Define the headers object
     const headers = {
       // Define your desired headers here
-      // For example:
       'Content-Type': 'application/json',
       Authorization: 'Bearer your-token',
     };
-    
     // Send the update request to the server
     await axios.put(`/api/put/complete/todo`,{ params, headers })
     .catch((err) => {
@@ -199,6 +192,8 @@ const Todo = ({
       return <ButtonInprogresStyle onClick={handleCompleteButtonClick}>In Progress</ButtonInprogresStyle>;
     } else if (todo.status === 'uncomplete') {
       return <ButtonUncompleteStyle onClick={handleCompleteButtonClick}>Uncomplete</ButtonUncompleteStyle>;
+    }else if (todo.status === 'complete') {
+      return <ButtonCompleteStyle onClick={handleCompleteButtonClick}>complete</ButtonCompleteStyle>;
     }
     return <ButtonNullStyle onClick={handleCompleteButtonClick}>No status</ButtonNullStyle>;
   };
@@ -208,21 +203,12 @@ const Todo = ({
       <ContainList>
         <TableStyle>
           <TrStyle isCompleted={isCompleted}>
-<<<<<<< HEAD
-            {isCompleted ? (
-              <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
-            ) : (
-              <StyledBiCircle onClick={handleCompleteButtonClick} />
-            )}
             <TdStyle >
-=======
-            <TdStyle  >
               {isCompleted ? (
-                <StyledBiCheckCircle onClick={handleIconClick} />
+                <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
               ) : (
-                <StyledBiCircle onClick={handleIconClick} />
+                <StyledBiCircle onClick={handleCompleteButtonClick} />
               )}
->>>>>>> refs/remotes/origin/main
               <p>{todo.title} </p>
             </TdStyle>
             <TdStyle>{todo.description}</TdStyle>
