@@ -2,9 +2,6 @@ import styled from 'styled-components';
 import { colors } from '../../../styles/theme';
 
 const DropDown = styled.select`
-    option{
-        
-    }
     background-color: #ffffff;
     border-color: #d2d6dc;
     border-width: 1px;
@@ -14,8 +11,7 @@ const DropDown = styled.select`
     line-height: 1.5;
     margin-top: 0.25rem;
     display: block;
-    width: 75%;
-    margin-left:10%;
+    width: 20rem;
     line-height: 1.25rem;
     transition: box-shadow 0.2s ease-in-out;
 

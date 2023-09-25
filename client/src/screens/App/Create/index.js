@@ -10,13 +10,13 @@ import axios from '../../../services/axios';
 import { sendEventToAnalytics } from '../../../services/analytics';
 
 import Button from '../../../components/Common/buttons/SecondaryButton';
-import Card from '../../../components/Common/Card';
+import Dialog from '../../../components/Common/Dialog';
 import FieldLabel from '../../../components/Common/forms/FieldLabel';
 import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
-
+import { isBefore, parseISO } from 'date-fns'; // Importing isBefore and parseISO functions for date comparison
 
 
 const Title = styled.h1`
@@ -33,13 +33,29 @@ const TextAreaWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  padding: 1.5rem;
-  background-color: ${colors.white};
   text-align: left;
+  padding: 1rem;
+   display:flex;
+    align-items: center;
+    justify-content: center;
+`;
+ const ContainDateStatus = styled.div`
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  width : 60rem;
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  
 `;
 
-
-
+ export const ContainStatus = styled.div`
+  width : 25rem;
+`;
+ export const ContainDate = styled.div`
+  width : 25rem;
+  margin-right: -1rem;
+`;
 
 const CreateTask = () => {
   const org_id = getOrgId();
@@ -62,10 +78,14 @@ const CreateTask = () => {
     let title = event.target.title?.value ?? ''; // Check if event.target.title exists before accessing value
     let description = event.target.description?.value ?? ''; // Check if event.target.description exists before accessing value
     let status = event.target.status?.value ?? ''; // Check if event.target.status exists before accessing value
-    let date = event.target.date?.value ?? ''; 
-    let data = { title, description, author, status,date, org_id };
-    console.log(data);
-
+    let date = event.target.date?.value ?? '';
+    let data = { title, description, author, status, date, org_id };
+    
+    if (!title || !description || !status || !date) {
+      message.error('Please fill in all fields');
+      fetchSuccess(); // Stop loading state
+      return;
+    }
     await axios.post(`/api/post/todo`, data, { headers }).catch((err) => {
       fetchFailure(err);
     });
@@ -75,6 +95,7 @@ const CreateTask = () => {
     setTitle('');
     setDescription('');
     setSelectStatus('');
+    setSelectedDate('');
     message.success('Todo Created');
     fetchSuccess();
   };
@@ -92,14 +113,22 @@ const CreateTask = () => {
   }
 
   const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-  };
+    const selectedDate = event.target.value;
+    const currentDate = new Date(); // Get the current date
+
+    if (isBefore(parseISO(selectedDate), currentDate)) {
+      // If selectedDate is before currentDate
+      message.error('Please select a date in the future');
+      setSelectedDate(''); // Clear the selectedDate
+    } else {
+      setSelectedDate(selectedDate);
+    }}
 
   return (
     <div>
       <Title>Create todo list here</Title>
       <form onSubmit={postTodo}>
-        <Card>
+        <Dialog>
           <Spin tip="Loading..." spinning={isLoading}>
             <InputWrapper>
               <FieldLabel htmlFor="title">
@@ -113,23 +142,23 @@ const CreateTask = () => {
                 <TextArea onChange={handleDescChange} value={formDescription} name="description" />
               </FieldLabel>
             </TextAreaWrapper>
-            <InputWrapper>
-              <FieldLabel htmlFor="status">
-                Select status:
-                <DropDown value={selectStatus} id="status" name="status" defaultValue="none" onChange={handleStatusChange}>
-                  <option  value="none" >Task status</option>
-                  <option value="uncomplete">Uncomplete</option>
-                  <option value="inprogres">In Progress</option>
-                  <option value="complete">Complete</option>
-                </DropDown>
-              </FieldLabel>
-            </InputWrapper>
-            <InputWrapper>
-              <FieldLabel  htmlFor="date">
-                Date of task:
-                <DateStyle type='date' id='date' name='date' value={selectedDate} onChange={handleDateChange}/>           
-              </FieldLabel>
-            </InputWrapper>
+            <ContainDateStatus>
+              <ContainStatus>
+                <FieldLabel htmlFor="status">
+                  Select status:
+                  <DropDown value={selectStatus} id="status" name="status" defaultValue="none" onChange={handleStatusChange}>
+                    <option value="none" >Task status</option>
+                    <option value="uncomplete">Uncomplete</option>
+                    <option value="inprogres">In Progress</option>
+                    <option value="complete">Complete</option>
+                  </DropDown>
+                </FieldLabel>
+              </ContainStatus>
+              <ContainDate>
+                  Date of task:
+                  <DateStyle type='date' id='date' name='date' value={selectedDate} onChange={handleDateChange} />
+              </ContainDate>
+            </ContainDateStatus>
             <ButtonWrapper>
               <Button
                 textColor={colors.white}
@@ -141,7 +170,7 @@ const CreateTask = () => {
               </Button>
             </ButtonWrapper>
           </Spin>
-        </Card>
+        </Dialog>
       </form>
     </div>
   );

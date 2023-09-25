@@ -10,9 +10,9 @@ const TextArea = styled.textarea`
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
   display: block;
-  width: 75%;
-  margin-left:10%;
+  width: 50rem;
   transition: box-shadow 0.2s ease-in-out;
+  overflow: hidden;
 
   &:focus {
     box-shadow: 0 0 0 4px lightblue;
