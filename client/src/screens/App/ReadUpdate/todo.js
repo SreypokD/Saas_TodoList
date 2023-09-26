@@ -14,7 +14,7 @@ import axios from 'axios';
 import { DateString } from '../../../components/Common/DateString';
 import { ContainStatus } from '../Create/index'
 import { ContainDate } from '../Create/index'
-
+import { message, Modal } from 'antd';
 const Wrapper = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -88,12 +88,12 @@ const TrStyle = styled.tr`
     background-color: ${colors.gray100};
   } 
   
-    ${({ isCompleted }) =>
-    isCompleted &&
-    `
-      color: red;
-      text-decoration: line-through;
-    `}
+  ${({ isCompleted }) =>
+  (isCompleted) &&
+  `
+    color: red;
+    text-decoration: line-through;
+  `}
 `
 
 const ButtonInprogresStyle = styled.button`
@@ -163,48 +163,49 @@ const Todo = ({
   editDate,
   handleDateChange
 }) => {
-  //  if task complete 
-  const [isCompleted, setIsCompleted] = useState(false);
-  const handleCompleteButtonClick = async (todo) => {
-    // Update the task's completion status locally
-    setIsCompleted(!isCompleted);
-    let todo_id = todo.id;
-    let params = { todo_id };
-    // Define the headers object
-    const headers = {
-      // Define your desired headers here
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer your-token',
-    };
-    // Send the update request to the server
-    await axios.put(`/api/put/complete/todo`,{ params, headers })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  };
+//  if task complete 
+const [isCompleted, setIsCompleted] = useState(false);
+const handleCompleteButtonClick = async (todo) => {
+  const headers = { Authorization: `Bearer` };
+  setIsCompleted(!isCompleted);
+  const todo_id = todo.id;
+  const url = `/api/put/complete/todo/?todo_id=${todo_id}`;
+  console.log(url);
+  await axios.put(url, { headers }).catch((err) => {
+    console.log(err);
+  });
+};
+  // try {
+  //   const response = await axios.put('/api/put/complete/todo', { todo_id: todo.id });
+  //   console.log(response)
+  //   if (response.status === 200) {
+  //     message.success('Todo marked as completed');
+  //   }
+  // } catch (error) {
+  //   message.error('Failed to mark todo as completed');
+  // }
 
   // Render the appropriate status button with the updated event handler
   const renderStatusButton = () => {
     if (isCompleted) {
-      return <ButtonCompleteStyle onClick={handleCompleteButtonClick}>Complete</ButtonCompleteStyle>;
+      return <ButtonCompleteStyle onClick={() => handleCompleteButtonClick(todo)}>Complete</ButtonCompleteStyle>;
     } else if (todo.status === 'inprogres') {
-      return <ButtonInprogresStyle onClick={handleCompleteButtonClick}>In Progress</ButtonInprogresStyle>;
+      return <ButtonInprogresStyle onClick={() => handleCompleteButtonClick(todo)}>In Progress</ButtonInprogresStyle>;
     } else if (todo.status === 'uncomplete') {
-      return <ButtonUncompleteStyle onClick={handleCompleteButtonClick}>Uncomplete</ButtonUncompleteStyle>;
-    }else if (todo.status === 'complete') {
-      return <ButtonCompleteStyle onClick={handleCompleteButtonClick}>complete</ButtonCompleteStyle>;
+      return <ButtonUncompleteStyle onClick={() => handleCompleteButtonClick(todo)}>Uncomplete</ButtonUncompleteStyle>;
+    } else if (todo.status === 'complete') {
+      return <ButtonCompleteStyle onClick={() => handleCompleteButtonClick(todo)}>Complete</ButtonCompleteStyle>;
     }
-    return <ButtonNullStyle onClick={handleCompleteButtonClick}>No status</ButtonNullStyle>;
+    return <ButtonNullStyle onClick={() => handleCompleteButtonClick(todo)}>No status</ButtonNullStyle>;
   };
 
   return (
     <Wrapper>
       <ContainList>
         <TableStyle>
-          <TrStyle isCompleted={isCompleted}>
+          <TrStyle isCompleted={isCompleted || todo.status === 'complete'}>
             <TdStyle >
-              {isCompleted ? (
+              {isCompleted || todo.status === 'complete'? (
                 <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
               ) : (
                 <StyledBiCircle onClick={handleCompleteButtonClick} />
@@ -215,14 +216,10 @@ const Todo = ({
             <TdStyle>
               <DateString dateString={todo.date} />
             </TdStyle>
-
-
             <TdStyle>
               {renderStatusButton()} {/* Render the appropriate status button */}
             </TdStyle>
-
             <TdStyle>
-
               <StyledIconEdit
                 onClick={() => editTodo(todo)}
                 backgroundColor={colors.indigo600}
@@ -246,9 +243,9 @@ const Todo = ({
         </TableStyle>
       </ContainList>
       {/* if edit todo */}
+
       {isEditting && todo.id === editTodoID && (
         <form onSubmit={(event) => putTodo(event, todo)}>
-          
           <Dialog>
             <TitleEdit>Edit Todo</TitleEdit>
             <TitleWrapper>

@@ -40,12 +40,10 @@ export const putTodo = async (req, res) => {
 };
 
 export const completeTodo = async (req, res) => {
-    let todo_id = req.query.todo_id;
-    // Call the completeTodoModel function
-    await completeTodoModel(todo_id);
-    res.status(200).json({ message: 'Todo completed successfully' });
-  }
-
+  let todo_id = req.query.todo_id;
+  await completeTodoModel(todo_id);
+  res.status(200).send('Todo completed successfully');
+};
 
 export const deleteTodo = async (req, res) => {
   let todo_id = req.query.todo_id;

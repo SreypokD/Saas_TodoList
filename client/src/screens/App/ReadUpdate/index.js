@@ -69,7 +69,6 @@ const ReadUpdate = () => {
   useEffect(() => {
     if (org_id) fetchTodos();
   }, [org_id]);
-  /* eslint-enable */
 
   const fetchTodos = async () => {
     fetchInit();
@@ -204,9 +203,9 @@ const ReadUpdate = () => {
         onOk={confirmDelete}
         onCancel={cancelDelete}
         okText="Delete"
-        cancelText="Cancel"
+        cancelText="No"
       >
-        <p>Are you sure you want to delete this todo?</p>
+        <strong>Are you sure you want to delete this todo?</strong>
       </Modal>
     </StyledMain>
   );

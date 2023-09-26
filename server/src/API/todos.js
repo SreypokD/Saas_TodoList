@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTodos, postTodo, putTodo,completeTodo ,deleteTodo } from '../Services/todos/todos.js';
+import { getTodos, postTodo, putTodo, deleteTodo ,completeTodo} from '../Services/todos/todos.js';
 import { asyncHandler } from '../Middleware/asyncErrorHandler.js';
 import { requireAuth } from '../Middleware/auth.js';
 const router = express.Router();
