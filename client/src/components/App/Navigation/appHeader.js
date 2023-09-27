@@ -196,6 +196,7 @@ const AppHeader = ({
     LogOut();
     router.push('/auth/login');
   };
+  
 
   return (
     <div>
@@ -242,15 +243,16 @@ const AppHeader = ({
           </StyledPopover>
           <Menu key="user" mode="horizontal" theme={theme}>
             <SubMenu
-              title={
-                <AvatarWrapper>
-                  {avatar ? (
-                    <StyledAvatar src={avatar} />
-                  ) : (
-                    <StyledAvatar icon={<UserOutlined />} />
-                  )}
-                </AvatarWrapper>
-              }
+               key="users"
+               title={
+                 <AvatarWrapper>
+                   {avatar ? (
+                     <StyledAvatar src={avatar} />
+                   ) : (
+                     <StyledAvatar icon={<UserOutlined />} />
+                   )}
+                 </AvatarWrapper>
+               }
             >
               <Menu.Item disabled key="Loggedin">
                 Logged in as {username}

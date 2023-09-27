@@ -16,7 +16,7 @@ import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
-import { isBefore, parseISO} from 'date-fns'; // Importing isBefore and parseISOISO functions for date comparison
+import { isBefore, parseISO } from 'date-fns'; // Importing isBefore and parseISOISO functions for date comparison
 
 
 const Title = styled.h1`
@@ -39,7 +39,7 @@ const ButtonWrapper = styled.div`
     align-items: center;
     justify-content: center;
 `;
- const ContainDateStatus = styled.div`
+const ContainDateStatus = styled.div`
   display:flex;
   align-items: center;
   justify-content: space-between;
@@ -49,10 +49,10 @@ const ButtonWrapper = styled.div`
   
 `;
 
- export const ContainStatus = styled.div`
+export const ContainStatus = styled.div`
   width : 25rem;
 `;
- export const ContainDate = styled.div`
+export const ContainDate = styled.div`
   width : 25rem;
   margin-right: -1rem;
 `;
@@ -80,7 +80,7 @@ const CreateTask = () => {
     let status = event.target.status?.value ?? ''; // Check if event.target.status exists before accessing value
     let date = event.target.date?.value ?? '';
     let data = { title, description, author, status, date, org_id };
-    
+
     if (!title || !description || !status || !date) {
       message.error('Please fill in all fields');
       fetchSuccess(); // Stop loading state
@@ -121,7 +121,8 @@ const CreateTask = () => {
       setSelectedDate(''); // Clear the selectedDate
     } else {
       setSelectedDate(selectedDate);
-    }}
+    }
+  }
 
   return (
     <div>
@@ -145,25 +146,25 @@ const CreateTask = () => {
               <ContainStatus>
                 <FieldLabel htmlFor="status">
                   Select status:
-                  <DropDown value={selectStatus} id="status" name="status" defaultValue="none" onChange={handleStatusChange}>
-                    <option value="none" >Task status</option>
+                  <DropDown value={selectStatus} id="status" name="status" onChange={handleStatusChange}>
+                    <option value="none">Task status</option>
                     <option value="uncomplete">Uncomplete</option>
-                    <option value="inprogres">In Progress</option>
+                    <option value="inprogress">In Progress</option>
                     <option value="complete">Complete</option>
                   </DropDown>
                 </FieldLabel>
               </ContainStatus>
               <ContainDate>
-                  Date of task:
-                  <DateStyle type='date' id='date' name='date' value={selectedDate} onChange={handleDateChange} />
+                Date of task:
+                <DateStyle type='date' id='date' name='date' value={selectedDate} onChange={handleDateChange} />
               </ContainDate>
             </ContainDateStatus>
             <ButtonWrapper>
               <Button
-                textColor={colors.white}
-                backgroundColor={colors.indigo600}
-                hoverBackgroundColor={colors.indigo500}
-                activeBackgroundColor={colors.indigo700}
+                textcolor={colors.white}
+                backgroundcolor={colors.indigo600}
+                hovercackgroundcolor={colors.indigo500}
+                activebackgroundcolor={colors.indigo700}
               >
                 Save list
               </Button>

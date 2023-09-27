@@ -67,7 +67,9 @@ const ReadUpdate = () => {
 
   /* eslint-disable */
   useEffect(() => {
-    if (org_id) fetchTodos();
+    if (org_id !=='[org_id]') {
+      fetchTodos();
+    }
   }, [org_id]);
 
   const fetchTodos = async () => {
@@ -175,7 +177,7 @@ const ReadUpdate = () => {
           {todos.length !== 0 ? (
             todos.map((todo) => (
               <Todo
-                todo={todo}
+                todo={todo}  key={todo.id} // Add the key prop with a unique identifier
                 isEditting={isEditting}
                 editTodoID={editTodoID}
                 handleEditTitleChange={handleEditTitleChange}

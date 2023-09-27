@@ -11,6 +11,8 @@ import { StyledBiCheckCircle, StyledBiCircle, StyledIconDelete, StyledIconEdit, 
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
 import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:8000';
 import { DateString } from '../../../components/Common/DateString';
 import { ContainStatus } from '../Create/index'
 import { ContainDate } from '../Create/index'
@@ -89,8 +91,8 @@ const TrStyle = styled.tr`
   } 
   
   ${({ isCompleted }) =>
-  (isCompleted) &&
-  `
+    (isCompleted) &&
+    `
     color: red;
     text-decoration: line-through;
   `}
@@ -133,7 +135,7 @@ const ButtonNullStyle = styled.button`
   font-size:12px
   padding: 5px;
   `
-  const ContainDateStatus = styled.div`
+const ContainDateStatus = styled.div`
   display:flex;
   align-items: center;
   justify-content: space-between;
@@ -141,7 +143,7 @@ const ButtonNullStyle = styled.button`
   margin-top: 0.5rem;
 
   `
-  const TitleEdit = styled.h1`
+const TitleEdit = styled.h1`
   text-align: center;
 
   `
@@ -163,27 +165,25 @@ const Todo = ({
   editDate,
   handleDateChange
 }) => {
-//  if task complete 
-const [isCompleted, setIsCompleted] = useState(false);
+  //  if task complete 
+  const [isCompleted, setIsCompleted] = useState(false);
 const handleCompleteButtonClick = async (todo) => {
-  const headers = { Authorization: `Bearer` };
   setIsCompleted(!isCompleted);
-  const todo_id = todo.id;
-  const url = `/api/put/complete/todo/?todo_id=${todo_id}`;
-  console.log(url);
-  await axios.put(url, { headers }).catch((err) => {
-    console.log(err);
-  });
+  try {
+    const response = await axios.put(`/api/put/complete/todo`, { todo_id: todo.id }, {
+      headers: {
+        Authorization: 'Bearer YOUR_AUTH_TOKEN',
+      },
+    });
+    console.log(response);
+    if (response.status === 200) {
+      message.success('Todo marked as completed');
+    }
+  } catch (error) {
+    message.error('Failed to mark todo as completed');
+  }
 };
-  // try {
-  //   const response = await axios.put('/api/put/complete/todo', { todo_id: todo.id });
-  //   console.log(response)
-  //   if (response.status === 200) {
-  //     message.success('Todo marked as completed');
-  //   }
-  // } catch (error) {
-  //   message.error('Failed to mark todo as completed');
-  // }
+
 
   // Render the appropriate status button with the updated event handler
   const renderStatusButton = () => {
@@ -203,43 +203,43 @@ const handleCompleteButtonClick = async (todo) => {
     <Wrapper>
       <ContainList>
         <TableStyle>
-          <TrStyle isCompleted={isCompleted || todo.status === 'complete'}>
-            <TdStyle >
-              {isCompleted || todo.status === 'complete'? (
-                <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
-              ) : (
-                <StyledBiCircle onClick={handleCompleteButtonClick} />
-              )}
-              <p>{todo.title} </p>
-            </TdStyle>
-            <TdStyle>{todo.description}</TdStyle>
-            <TdStyle>
-              <DateString dateString={todo.date} />
-            </TdStyle>
-            <TdStyle>
-              {renderStatusButton()} {/* Render the appropriate status button */}
-            </TdStyle>
-            <TdStyle>
-              <StyledIconEdit
-                onClick={() => editTodo(todo)}
-                backgroundColor={colors.indigo600}
-                textColor={colors.white}
-                hoverBackgroundColor={colors.indigo500}
-                activeBackgroundColor={colors.indigo600}
-              >
-                Edit
-              </StyledIconEdit>
-              <StyledIconDelete
-                onClick={() => deleteTodo(todo)}
-                backgroundColor={colors.red500}
-                textColor={colors.white}
-                hoverBackgroundColor={colors.indigo500}
-                activeBackgroundColor={colors.indigo600}
-              >
-                Delete
-              </StyledIconDelete>
-            </TdStyle>
-          </TrStyle>
+          <tbody>
+            <TrStyle isCompleted={isCompleted || todo.status === 'complete'}>
+              <TdStyle>
+                {isCompleted || todo.status === 'complete' ? (
+                  <StyledBiCheckCircle onClick={handleCompleteButtonClick} />
+                ) : (
+                  <StyledBiCircle onClick={handleCompleteButtonClick} />
+                )}
+                <p>{todo.title}</p>
+              </TdStyle>
+              <TdStyle>{todo.description}</TdStyle>
+              <TdStyle>
+                <DateString dateString={todo.date} />
+              </TdStyle>
+              <TdStyle>{renderStatusButton()}</TdStyle>
+              <TdStyle>
+                <StyledIconEdit
+                  onClick={() => editTodo(todo)}
+                  textcolor={colors.white}
+                  backgroundcolor={colors.indigo600}
+                  hovercackgroundcolor={colors.indigo500}
+                  activebackgroundcolor={colors.indigo700}
+                >
+                  Edit
+                </StyledIconEdit>
+                <StyledIconDelete
+                  onClick={() => deleteTodo(todo)}
+                  backgroundcolor={colors.red500}
+                  textcolor={colors.white}
+                  hovercackgroundcolor={colors.indigo500}
+                  activebackgroundcolor={colors.indigo700}
+                >
+                  Delete
+                </StyledIconDelete>
+              </TdStyle>
+            </TrStyle>
+          </tbody>
         </TableStyle>
       </ContainList>
       {/* if edit todo */}
