@@ -37,7 +37,8 @@ const ButtonWrapper = styled.div`
   padding: 1rem;
    display:flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
+    width : 58.5rem;
 `;
 const ContainDateStatus = styled.div`
   display:flex;
@@ -48,6 +49,7 @@ const ContainDateStatus = styled.div`
   margin-top: 1rem;
   
 `;
+
 
 export const ContainStatus = styled.div`
   width : 25rem;

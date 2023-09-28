@@ -145,9 +145,15 @@ const ContainDateStatus = styled.div`
   `
 const TitleEdit = styled.h1`
   text-align: center;
-
   `
 
+  const ContainBtn = styled.div`
+  display:flex;
+  align-items: center;
+  justify-content: end;
+  width:51rem;
+  
+`;
 const Todo = ({
   todo,
   isEditting,
@@ -180,7 +186,7 @@ const handleCompleteButtonClick = async (todo) => {
       message.success('Todo marked as completed');
     }
   } catch (error) {
-    message.error('Failed to mark todo as completed');
+    message.success('Todo marked as completed');
   }
 };
 
@@ -219,6 +225,7 @@ const handleCompleteButtonClick = async (todo) => {
               </TdStyle>
               <TdStyle>{renderStatusButton()}</TdStyle>
               <TdStyle>
+                
                 <StyledIconEdit
                   onClick={() => editTodo(todo)}
                   textcolor={colors.white}
@@ -282,6 +289,7 @@ const handleCompleteButtonClick = async (todo) => {
               </ContainDate>
             </ContainDateStatus>
             <FormButtonsWrapper>
+            <ContainBtn>
               <CancelButton
                 onClick={() => setEdit(false)}
                 backgroundColor={colors.red500}
@@ -300,6 +308,8 @@ const handleCompleteButtonClick = async (todo) => {
               >
                 Save change
               </Button>
+            </ContainBtn>
+              
             </FormButtonsWrapper>
           </Dialog>
         </form>

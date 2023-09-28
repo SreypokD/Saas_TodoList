@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { colors } from '../../../styles/theme';
 import Link from 'next/link';
 import { Empty } from 'antd';
 
@@ -15,7 +16,7 @@ import Button from '../../../components/Common/buttons/PrimaryButton';
 
 import DangerButton from '../../../components/Common/buttons/DangerButton';
 import TextInput from '../../../components/Common/forms/TextInput';
-import FieldLabel from '../../../components/Common/forms/FieldLabel';
+
 import TextInputWrapper from '../../../components/Common/forms/TextInputWrapper';
 
 const ContentWrapper = styled.div`
@@ -30,14 +31,39 @@ const ContentWrapper = styled.div`
   }
 `;
 
+
+const Label = styled.label`
+  input {
+    margin-top: 0.5rem;
+    width: 40rem;
+  }
+  display: block;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: ${colors.gray700};
+  margin-left: 6rem
+`;
+
+
 const StyledCard = styled(Card)`
   display: flex;
   flex-direction: column;
   padding: 2rem;
   border: 1px solid black;
   max-width: 24rem;
-  width: 100%;
+  width: 100rem;
 `;
+
+const StyledCardOrg = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border: 1px solid black;
+  max-width: 58rem;
+  width: 100rem;
+`;
+
 
 const CreateAppWrapper = styled.div`
   width: 24rem;
@@ -82,7 +108,7 @@ const Dashboard = () => {
   const { isLoading } = apiState;
   const [orgs, setOrgs] = useState([]);
   let token = authState?.user.jwt_token;
-  const headers = { Authorization: `Bearer ${token}`};
+  const headers = { Authorization: `Bearer ${token}` };
 
   /* eslint-disable */
   useEffect(() => {
@@ -150,15 +176,14 @@ const Dashboard = () => {
             <AppsWrapper>
               {!orgs.length == 0 ? (
                 orgs.map((org) => (
-                  <Link href={`/app/${org.id}/dashboard`} state={{ org }}>
-                    <a>
-                      <StyledCard key={org.id}>
-                        <StyledLink>{org.org_name}</StyledLink>
-
-                        <RoleText>Role: admin</RoleText>
-                      </StyledCard>
-                    </a>
-                  </Link>
+                  <Link key={org.id} href={`/app/${org.id}/dashboard`} state={{ org }}>
+                  <a>
+                    <StyledCard>
+                      <StyledLink>{org.org_name}</StyledLink>
+                      <RoleText>Role: admin</RoleText>
+                    </StyledCard>
+                  </a>
+                </Link>
                 ))
               ) : (
                 <Empty />
@@ -168,14 +193,16 @@ const Dashboard = () => {
           <CreateAppWrapper>
             <h2>Create Org:</h2>
             <form onSubmit={postOrg}>
-              <StyledCard>
+              <StyledCardOrg>
                 <TextInputWrapper>
-                  <FieldLabel htmlFor="name">
+                  <Label htmlFor="name">
                     Create: <TextInput type="text" name="name" />
-                  </FieldLabel>
+                  </Label>
                 </TextInputWrapper>
-                <Button type="submit">Save</Button>
-              </StyledCard>
+                <Button type="submit">Save org</Button>
+              </StyledCardOrg>
+
+
             </form>
           </CreateAppWrapper>
         </ContentWrapper>

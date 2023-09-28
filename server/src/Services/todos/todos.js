@@ -39,14 +39,14 @@ export const putTodo = async (req, res) => {
   res.status(200).send('Put Successful');
 };
 
-export const completeTodo = async (req, res) => {
-  let todo_id = req.query.todo_id;
-  await completeTodoModel(todo_id);
-  res.status(200).send('Todo completed successfully');
-};
-
 export const deleteTodo = async (req, res) => {
   let todo_id = req.query.todo_id;
   await deleteTodoModel(todo_id);
   res.status(200).send('Delete Successful');
+};
+
+export const completeTodo = async (req, res) => {
+  let todo_id = req.query.todo_id;
+  await completeTodoModel(todo_id);
+  res.status(200).send('Todo completed successfully');
 };

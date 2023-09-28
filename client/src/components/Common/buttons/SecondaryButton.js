@@ -15,9 +15,10 @@ const SecondaryButton = styled.button`
   border: none;
   border-radius: 0.2rem;
   cursor: pointer;
+  opacity: 80%;
 
   &:hover {
-    opacity: 90%;
+    opacity: 100%;
   }
 
   &:focus {
