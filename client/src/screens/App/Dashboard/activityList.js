@@ -44,7 +44,7 @@ const ActivityList = () => (
   <Wrapper1>
     <Wrapper2 tabindex="0">
       <Main>
-        <Title>Recent activity</Title>
+        <Title>All activity</Title>
         <DesktopActivityList />
         <MobileActivityList />
       </Main>

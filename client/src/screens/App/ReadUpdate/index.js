@@ -9,6 +9,9 @@ import { Empty, Spin } from 'antd';
 import axios from '../../../services/axios';
 import Card from '../../../components/Common/Card';
 import { message, Modal } from 'antd';
+import SearchInput from '../../../components/Common/forms/SearchInput';
+import { StyledFcSearch } from '../../../components/Common/reacticon/icon';
+
 const StyledMain = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,6 +47,13 @@ const ThStyle = styled.strong`
   }
 `
 
+const SearchStyle = styled.div`
+  position: relative;
+  display:flex;
+  align-items: center;
+  justity-content: end;
+`
+
 const ReadUpdate = () => {
   const org_id = getOrgId();
   const { authState } = useContext(AuthContext);
@@ -61,13 +71,18 @@ const ReadUpdate = () => {
   const [editDescription, setEditDescription] = useState('');
   const [editDate, setEditDate] = useState('');
   const [editStatus, setEditStatus] = useState('');
-//delete diglog visible
+  //delete diglog visible
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [deleteTargetTodo, setDeleteTargetTodo] = useState(null);
 
+  // search bar
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+
   /* eslint-disable */
   useEffect(() => {
-    if (org_id !=='[org_id]') {
+    if (org_id !== '[org_id]') {
       fetchTodos();
     }
   }, [org_id]);
@@ -88,24 +103,24 @@ const ReadUpdate = () => {
     setDeleteConfirmationVisible(true);
   };
 
-    const confirmDelete = async () => {
-      fetchInit();
-      const todo_id = deleteTargetTodo.id;
+  const confirmDelete = async () => {
+    fetchInit();
+    const todo_id = deleteTargetTodo.id;
 
-      const params = { todo_id };
-      await axios.delete(`/api/delete/todo`, { params, headers }).catch((err) => {
-        fetchFailure(err);
-      });
+    const params = { todo_id };
+    await axios.delete(`/api/delete/todo`, { params, headers }).catch((err) => {
+      fetchFailure(err);
+    });
 
-      setDeleteConfirmationVisible(false);
-      setTimeout(() => fetchTodos(), 300);
-      message.success('Todo Deleted');
-      fetchSuccess();
-    };
+    setDeleteConfirmationVisible(false);
+    setTimeout(() => fetchTodos(), 300);
+    message.success('Todo Deleted');
+    fetchSuccess();
+  };
 
-    const cancelDelete = () => {
-      setDeleteConfirmationVisible(false);
-    };
+  const cancelDelete = () => {
+    setDeleteConfirmationVisible(false);
+  };
 
   const putTodo = async (event, todo) => {
     event.preventDefault();
@@ -123,7 +138,7 @@ const ReadUpdate = () => {
       message.error('Please fill in all fields');
       fetchSuccess(); // Stop loading state
       return;
-    }else {
+    } else {
       message.success('Todo Edited');
     }
     await axios.put(`/api/put/todo`, data, { headers }).catch((err) => {
@@ -161,9 +176,17 @@ const ReadUpdate = () => {
   const handleDateChange = (event) => {
     setEditDate(event.target.value);
   };
-
+  //search title of task
+  const filteredTodos = todos.filter((todo) =>
+    todo.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <StyledMain>
+      <SearchStyle>
+        <SearchInput type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='search title of task' />
+        <StyledFcSearch />
+      </SearchStyle>
+
       <Title>Todos List: </Title>
       <Card>
         <TitleTr>
@@ -174,10 +197,10 @@ const ReadUpdate = () => {
           <ThStyle>Action</ThStyle>
         </TitleTr>
         <Spin tip="Loading..." spinning={isLoading}>
-          {todos.length !== 0 ? (
-            todos.map((todo) => (
+          {filteredTodos.length !== 0 ? (
+            filteredTodos.map((todo) => (
               <Todo
-                todo={todo}  key={todo.id} // Add the key prop with a unique identifier
+                todo={todo} key={todo.id} // Add the key prop with a unique identifier
                 isEditting={isEditting}
                 editTodoID={editTodoID}
                 handleEditTitleChange={handleEditTitleChange}

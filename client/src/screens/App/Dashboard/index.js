@@ -7,6 +7,8 @@ import LineBarAreaComposedChart from './Charts/LineBarAreaComposedChart';
 import StackedChart from './Charts/StackedChart';
 import AreaChartFillByValue from './Charts/AreaChartFillByValue';
 import SimpleBarChart from './Charts/SimpleBarChart';
+import TotalItem from './total';
+import TodoList from './todoList';
 
 const Title = styled.h1`
   font-weight: 600;
@@ -31,14 +33,16 @@ const Dashboard = () => {
   return (
     <div>
       <Title>Dashboard</Title>
-      <Stats />
-      <ChartsContainer>
+      <TotalItem/>
+      <TodoList/>
+      {/* <Stats /> */}
+      {/* <ChartsContainer>
         <LineBarAreaComposedChart />
         <StackedChart />
         <AreaChartFillByValue />
         <SimpleBarChart />
-      </ChartsContainer>
-      <ActivityList />
+      </ChartsContainer> */}
+      {/* <ActivityList /> */}
     </div>
   );
 };

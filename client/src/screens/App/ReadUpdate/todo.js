@@ -147,7 +147,7 @@ const TitleEdit = styled.h1`
   text-align: center;
   `
 
-  const ContainBtn = styled.div`
+const ContainBtn = styled.div`
   display:flex;
   align-items: center;
   justify-content: end;
@@ -173,23 +173,23 @@ const Todo = ({
 }) => {
   //  if task complete 
   const [isCompleted, setIsCompleted] = useState(false);
-const handleCompleteButtonClick = async (todo) => {
-  setIsCompleted(!isCompleted);
-  try {
-    const response = await axios.put(`/api/put/complete/todo`, { todo_id: todo.id }, {
-      headers: {
-        Authorization: 'Bearer YOUR_AUTH_TOKEN',
-      },
-    });
-    console.log(response);
-    if (response.status === 200) {
-      message.success('Todo marked as completed');
+  const handleCompleteButtonClick = async (todo) => {
+    setIsCompleted(!isCompleted);
+    try {
+      const response = await axios.put(`/api/put/complete/todo`, { todo_id: todo.id }, {
+        headers: {
+          Authorization: 'Bearer YOUR_AUTH_TOKEN',
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      if (!isCompleted) {
+        message.success('Todo marked as completed');
+      } else {
+        message.success("You're not complete");
+      }
     }
-  } catch (error) {
-    message.success('Todo marked as completed');
-  }
-};
-
+  };
 
   // Render the appropriate status button with the updated event handler
   const renderStatusButton = () => {
@@ -206,6 +206,8 @@ const handleCompleteButtonClick = async (todo) => {
   };
 
   return (
+  
+    
     <Wrapper>
       <ContainList>
         <TableStyle>
@@ -225,7 +227,7 @@ const handleCompleteButtonClick = async (todo) => {
               </TdStyle>
               <TdStyle>{renderStatusButton()}</TdStyle>
               <TdStyle>
-                
+
                 <StyledIconEdit
                   onClick={() => editTodo(todo)}
                   textcolor={colors.white}
@@ -289,27 +291,27 @@ const handleCompleteButtonClick = async (todo) => {
               </ContainDate>
             </ContainDateStatus>
             <FormButtonsWrapper>
-            <ContainBtn>
-              <CancelButton
-                onClick={() => setEdit(false)}
-                backgroundColor={colors.red500}
-                textColor={colors.white}
-                hoverBackgroundColor={colors.indigo500}
-                activeBackgroundColor={colors.indigo600}
-              >
-                Cancel
-              </CancelButton>
-              <Button
-                type="submit"
-                backgroundColor={colors.indigo600}
-                textColor={colors.white}
-                hoverBackgroundColor={colors.indigo500}
-                activeBackgroundColor={colors.indigo600}
-              >
-                Save change
-              </Button>
-            </ContainBtn>
-              
+              <ContainBtn>
+                <CancelButton
+                  onClick={() => setEdit(false)}
+                  backgroundColor={colors.red500}
+                  textColor={colors.white}
+                  hoverBackgroundColor={colors.indigo500}
+                  activeBackgroundColor={colors.indigo600}
+                >
+                  Cancel
+                </CancelButton>
+                <Button
+                  type="submit"
+                  backgroundColor={colors.indigo600}
+                  textColor={colors.white}
+                  hoverBackgroundColor={colors.indigo500}
+                  activeBackgroundColor={colors.indigo600}
+                >
+                  Save change
+                </Button>
+              </ContainBtn>
+
             </FormButtonsWrapper>
           </Dialog>
         </form>

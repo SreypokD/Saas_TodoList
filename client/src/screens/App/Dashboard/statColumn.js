@@ -39,13 +39,7 @@ const Number = styled.div`
   line-height: 2rem;
 `;
 
-const InitialNumber = styled.span`
-  color: ${colors.gray500};
-  font-weight: 500;
-  line-height: 1.25rem;
-  font-size: 0.875rem;
-  margin-left: 0.5rem;
-`;
+
 
 const Description = styled.span`
   position: absolute;
@@ -60,15 +54,15 @@ const Description = styled.span`
 `;
 
 const Pill = styled.div`
-  display: inline-flex;
-  align-items: baseline;
+  display: flex;
+  align-items: center;
   color: ${({ pillTextColor }) => pillTextColor};
   background-color: ${({ pillColor }) => pillColor};
-  border-radius: 9999px;
-  font-weight: 500;
-  font-size: 0.875rem;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
   line-height: 1.25rem;
-  padding: 0.125rem 0.625rem;
+  padding: 1rem;
   @media (min-width: ${breakpoints.medium}) {
     margin-top: 0.5rem;
   }
