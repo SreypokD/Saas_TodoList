@@ -1,115 +1,63 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colors, breakpoints } from '../../../styles/theme';
-import Button from './button';
-import Chevron from '../../../components/App/svgs/chevron';
-import Cash from '../../../components/App/svgs/cash';
+import styled from "styled-components"
+import { colors } from "../../../styles/theme"
+import DesktopActivityList from "./desktopActivityList"
+import MobileActivityList from "./mobileActivityList"
 
-const Wrapper = styled.div`
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  @media (min-width: ${breakpoints.small}) {
-    display: none;
-  }
-`;
 
-const List = styled.ul`
-  margin-top: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  @media (min-width: ${breakpoints.small}) {
-    display: none;
-  }
-`;
 
-const Card = styled.a`
-  background-color: ${colors.white};
-  display: block;
-  padding: 1rem;
-  &:hover {
-    background-color: ${colors.coolGray50};
-  }
-`;
 
-const TextWrapper1 = styled.div`
+
+const Wrapper1 = styled.div`
+  height: 100vh;
   display: flex;
-  align-items: center;
-`;
+  overflow: hidden;
+  background-color: ${colors.coolGray100};
+`
 
-const TextWrapper2 = styled.div`
+const Wrapper2 = styled.div`
   flex: 1 1 0%;
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
+  overflow: auto;
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+`
 
-const Text = styled.div`
-  color: ${colors.coolGray500};
-  font-size: 0.875rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-left: 12px;
-`;
+const Main = styled.main`
+  flex: 1 1 0%;
+  position: relative;
+  padding-bottom: 2rem;
+  z-index: 0;
+  overflow-y: auto;
+`
 
-const Title = styled.p`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const Number = styled.span`
-  color: ${colors.coolGray900};
+const Title = styled.h2`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
   font-weight: 500;
-`;
+  color: ${colors.coolGray900};
+`
 
-const Nav = styled.nav`
-  background-color: ${colors.white};
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid ${colors.coolGray200};
-`;
 
-const ButtonsWrapper = styled.div`
-  flex: 1 1 0%;
-  display: flex;
-  justify-content: space-between;
-`;
+const TodoList = () => {
 
-const StyledButton = styled(Button)`
-  margin-left: 0.75rem;
-`;
+  return (
+    <Wrapper1>
+      <Wrapper2 tabindex="0">
+        <Main>
+          <Title>All Task</Title>
+          <DesktopActivityList/>
+          <MobileActivityList />
+        </Main>
+      </Wrapper2>
+    </Wrapper1>
+  );
+}
 
-const TodoList = () => (
-  <Wrapper>
-    <List>
-      <li>
-        <Card href="#">
-          <TextWrapper1>
-            <TextWrapper2>
-              <Cash />
-              <Text>
-                <Title>Payment to Molly Sanders</Title>
-                <p>
-                  <Number>$20,000</Number> USD
-                </p>
-                <p>July 11, 2020</p>
-              </Text>
-            </TextWrapper2>
-            <Chevron />
-          </TextWrapper1>
-        </Card>
-      </li>
-    </List>
-    <Nav>
-      <ButtonsWrapper>
-        <Button label="Previous" />
-        <StyledButton label="Next" />
-      </ButtonsWrapper>
-    </Nav>
-  </Wrapper>
-);
-
-export default TodoList;
+export default TodoList

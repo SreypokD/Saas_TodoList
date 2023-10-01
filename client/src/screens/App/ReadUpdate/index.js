@@ -174,7 +174,15 @@ const ReadUpdate = () => {
   };
 
   const handleDateChange = (event) => {
-    setEditDate(event.target.value);
+    const selectedDate = event.target.value;
+    const currentDate = new Date().toISOString().slice(0, 10); // Get the current date in YYYY-MM-DD format
+  
+    if (selectedDate >= currentDate) {
+      setEditDate(selectedDate);
+    } else {
+      // Display an error message or handle the validation error as per your requirements
+      message.error('Please select a date in the future');
+    }
   };
   //search title of task
   const filteredTodos = todos.filter((todo) =>

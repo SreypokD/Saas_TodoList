@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Stats from './stats';
-import ActivityList from './activityList';
+import ActivityList from './todoList';
 import { colors, breakpoints } from '../../../styles/theme';
 import LineBarAreaComposedChart from './Charts/LineBarAreaComposedChart';
 import StackedChart from './Charts/StackedChart';
@@ -34,15 +34,14 @@ const Dashboard = () => {
     <div>
       <Title>Dashboard</Title>
       <TotalItem/>
-      <TodoList/>
       {/* <Stats /> */}
       {/* <ChartsContainer>
         <LineBarAreaComposedChart />
         <StackedChart />
         <AreaChartFillByValue />
         <SimpleBarChart />
-      </ChartsContainer> */}
-      {/* <ActivityList /> */}
+      </ChartsContainer>  */}
+     <TodoList />
     </div>
   );
 };

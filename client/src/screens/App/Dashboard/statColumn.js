@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const Dt = styled.dt`
   color: ${colors.gray900};
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.5rem;
 `;
 
@@ -33,10 +33,11 @@ const Dd = styled.dd`
 const Number = styled.div`
   display: flex;
   align-items: baseline;
-  color: ${colors.indigo600};
+  color: ${colors.indigo800};
   font-weight: 600;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   line-height: 2rem;
+  margin-left: 3rem;
 `;
 
 

@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import Button from './button';
 import { colors, breakpoints } from '../../../styles/theme';
-import Cash from '../../../components/App/svgs/cash';
+import AuthContext from '../../../utils/authContext';
+import ApiContext from '../../../utils/apiContext';
+import getOrgId from '../../../utils/orgId';
+import axios from '../../../services/axios';
+import { DateString } from '../../../components/Common/DateString';
+import { ButtonCompleteStyle, ButtonInprogresStyle, ButtonNullStyle, ButtonUncompleteStyle } from '../../../components/Common/StatusBtn';
+
 
 const Wrapper = styled.div`
   display: none;
@@ -37,10 +42,11 @@ const StyledTh1 = styled(ThBase)`
 `;
 
 const StyledTh2 = styled(ThBase)`
-  text-align: right;
+  text-align: left;
 `;
 
 const StyledTh3 = styled(ThBase)`
+
   text-align: left;
   display: none;
   @media (min-width: ${breakpoints.medium}) {
@@ -62,20 +68,18 @@ const TdBase = styled.td`
 const StyledTd1 = styled(TdBase)`
   color: ${colors.gray900};
   max-width: 0rem;
-  width: 100%;
+ width: 50%;
 `;
 
-const TransactionName = styled.div`
-  display: flex;
-`;
 
 const StyledTd2 = styled(TdBase)`
   color: ${colors.coolGray500};
-  text-align: right;
+  text-align: left;
+ 
 `;
 
 const StyledTd3 = styled(TdBase)`
-  color: ${colors.coolGray500};
+
   display: none;
   @media (min-width: ${breakpoints.medium}) {
     display: block;
@@ -119,10 +123,6 @@ const Status = styled.span`
   text-transform: capitalize;
 `;
 
-const Number = styled.span`
-  color: ${colors.gray900};
-  font-weight: 500;
-`;
 
 const Nav = styled.nav`
   background-color: ${colors.white};
@@ -139,69 +139,92 @@ const NavText = styled.p`
   color: ${colors.coolGray700};
 `;
 
+const TrStyle = styled.tr`
+  border-bottom: 1px solid ${colors.gray300};
+`;
+
+
 const Span = styled.span`
   font-weight: 500;
   padding: 0 3px;
 `;
 
-const ButtonsWrapper = styled.div`
-  flex: 1 1 0%;
-  display: flex;
-  justify-content: flex-end;
-`;
+const DesktopActivityList = () => {
+  const org_id = getOrgId();
+  const { authState } = useContext(AuthContext);
+  const { fetchFailure, fetchInit, fetchSuccess, apiState } = useContext(ApiContext);
+  const { isLoading } = apiState;
+  let token = authState?.user.jwt_token;
+  const headers = { Authorization: `Bearer ${token}` };
 
-const StyledButton = styled(Button)`
-  margin-left: 0.75rem;
-`;
+  const [todos, setTodos] = useState([]);
 
-const DesktopActivityList = () => (
-  <Wrapper>
+  useEffect(() => {
+    if (org_id !== '[org_id]') {
+      fetchTodos();
+    }
+  }, [org_id]);
+
+
+  const fetchTodos = async () => {
+    fetchInit();
+    let params = { org_id };
+    try {
+      let result = await axios.get(`/api/get/todos`, { params, headers });
+      setTodos(result.data);
+      fetchSuccess();
+    } catch (err) {
+      fetchFailure(err);
+    }
+  };
+    // Render the appropriate status button with the updated event handler
+    const renderStatusButton = (status) => {
+      if (status === 'inprogres') {
+        return <ButtonInprogresStyle>Inprogress</ButtonInprogresStyle>
+      } else if (status === 'uncomplete') {
+        return <ButtonUncompleteStyle>Uncomplete</ButtonUncompleteStyle>;
+      } else if (status === 'complete') {
+        return <ButtonCompleteStyle>Complete</ButtonCompleteStyle>;
+      } else {
+        return <ButtonNullStyle>No status</ButtonNullStyle>;
+      }
+    };
+  return (
+    <Wrapper>
     <Table>
       <thead>
         <tr>
-          <StyledTh1>Transaction</StyledTh1>
-          <StyledTh2>Amount</StyledTh2>
-          <StyledTh3>Status</StyledTh3>
-          <StyledTh2>Date</StyledTh2>
+          <StyledTh2>NO</StyledTh2>
+          <StyledTh1>Title</StyledTh1>
+          <StyledTh2>DateTime</StyledTh2>
+          <StyledTh3> | 
+          </StyledTh3>
+          <StyledTh2>Status</StyledTh2>
         </tr>
       </thead>
       <TableBody>
-        <tr>
-          <StyledTd1>
-            <TransactionName>
-              <PaymentButton>
-                <Cash />
-                <Title>Payment to Molly Sanders</Title>
-              </PaymentButton>
-            </TransactionName>
-          </StyledTd1>
-          <StyledTd2>
-            <Number>$20,000 </Number>
-            USD
-          </StyledTd2>
-          <StyledTd3>
-            <Status>success</Status>
-          </StyledTd3>
-          <StyledTd2>July 11, 2020</StyledTd2>
-        </tr>
-      </TableBody>
+          {todos.map((todo , index) => (
+            <TrStyle TrStyle key={todo.id}>
+              <StyledTd2>{index + 1}</StyledTd2>
+              <StyledTd1>{todo.title}</StyledTd1>
+              <StyledTd2>
+                <DateString dateString={todo.date}/>
+                </StyledTd2>
+              <StyledTd3></StyledTd3>
+              <StyledTd2>
+                {renderStatusButton(todo.status)}
+              </StyledTd2>
+            </TrStyle>
+          ))}
+        </TableBody>
     </Table>
     <Nav>
       <NavText>
-        Showing
-        <Span>1</Span>
-        to
-        <Span>10</Span>
-        of
-        <Span>20</Span>
-        results
+        Showing total of task: <Span>{todos.length}</Span>
       </NavText>
-      <ButtonsWrapper>
-        <Button label="Previous" />
-        <StyledButton label="Next" />
-      </ButtonsWrapper>
     </Nav>
   </Wrapper>
-);
+  );
+};
 
 export default DesktopActivityList;

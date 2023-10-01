@@ -16,7 +16,7 @@ import TextArea from '../../../components/Common/forms/TextArea';
 import TextInput from '../../../components/Common/forms/TextInput';
 import DropDown from '../../../components/Common/forms/DropDownd';
 import DateStyle from '../../../components/Common/forms/DateInput';
-import { isBefore, parseISO } from 'date-fns'; // Importing isBefore and parseISOISO functions for date comparison
+import { isBefore, parse } from 'date-fns'; // Importing isBefore and parseISO functions for date comparison
 
 
 const Title = styled.h1`
@@ -117,7 +117,7 @@ const CreateTask = () => {
     const selectedDate = event.target.value;
     const currentDate = new Date(); // Get the current date
 
-    if (isBefore(parseISO(selectedDate), currentDate)) {
+    if (isBefore(parse(selectedDate), currentDate)) {
       // If selectedDate is before currentDate
       message.error('Please select a date in the future');
       setSelectedDate(''); // Clear the selectedDate

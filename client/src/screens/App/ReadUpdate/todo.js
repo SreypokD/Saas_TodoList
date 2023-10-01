@@ -17,6 +17,7 @@ import { DateString } from '../../../components/Common/DateString';
 import { ContainStatus } from '../Create/index'
 import { ContainDate } from '../Create/index'
 import { message, Modal } from 'antd';
+import { ButtonCompleteStyle, ButtonInprogresStyle, ButtonNullStyle, ButtonUncompleteStyle } from '../../../components/Common/StatusBtn';
 const Wrapper = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -98,43 +99,6 @@ const TrStyle = styled.tr`
   `}
 `
 
-const ButtonInprogresStyle = styled.button`
-    background-color: #ffd1b3;
-    border: none;
-    margin:2px;
-    border-radius: 50px;
-    color: #ff4f00;
-    font-size:12px
-    padding: 5px;
-`
-const ButtonUncompleteStyle = styled.button`
-    background-color: #ffcbd1;
-    border: none;
-    margin:2px;
-    border-radius: 30px;
-    color: red;
-    font-size:12px
-    padding: 5px;
-`
-
-const ButtonCompleteStyle = styled.button`
-    background-color: #cbf5dd;
-    border: none;
-    margin:2px;
-    border-radius: 30px;
-    color: green;
-    font-size:12px
-    padding: 5px;
-`
-const ButtonNullStyle = styled.button`
-  background-color:red;
-  border: none;
-  margin:2px;
-  border-radius: 30px;
-  color: white;
-  font-size:12px
-  padding: 5px;
-  `
 const ContainDateStatus = styled.div`
   display:flex;
   align-items: center;
@@ -171,6 +135,7 @@ const Todo = ({
   editDate,
   handleDateChange
 }) => {
+  
   //  if task complete 
   const [isCompleted, setIsCompleted] = useState(false);
   const handleCompleteButtonClick = async (todo) => {
@@ -181,8 +146,7 @@ const Todo = ({
           Authorization: 'Bearer YOUR_AUTH_TOKEN',
         },
       });
-      console.log(response);
-    } catch (error) {
+    } catch (success) {
       if (!isCompleted) {
         message.success('Todo marked as completed');
       } else {
